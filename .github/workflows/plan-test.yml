@@ -34,6 +34,12 @@ jobs:
       - name: 'Build'
         run: pnpm tsc --build
 
+      - name: 'Upload Artifacts'
+        uses: actions/upload-artifact@v4
+        with:
+          name: build_artifact
+          path: ../build
+
   terraform:
     name: 'Terraform Plan'
     runs-on: ubuntu-latest
@@ -65,6 +71,11 @@ jobs:
         with:
           aws-region: 'ap-northeast-1'
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN }}
+
+      - name: 'Download Artifact'
+        uses: actions/download-artifact@v4
+        with:
+          name: build_artifact
 
       - name: 'Terraform init'
         run: terraform -chdir=./terraform/environment/prd/ init
