@@ -132,5 +132,8 @@ dist
 # Terraform
 .terraform
 
+# TypeScript
+build
+
 # Editor
 .idea
