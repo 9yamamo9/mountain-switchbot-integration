@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: 'TSC Build'
+    name: 'Build'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -35,7 +35,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build_artifact
-          path: packages/build
+          path: build
 
   terraform:
     name: 'Terraform Apply'
@@ -75,15 +75,11 @@ jobs:
           name: build_artifact
           path: build
 
-      - name: 'ls'
-        run: ls -Gla
-
       - name: 'Terraform init'
         run: terraform -chdir=./terraform/environment/prd/ init
 
       - name: 'Terraform Plan'
         run: terraform -chdir=./terraform/environment/prd/ plan
 
-# FIXME:
-#      - name: 'Terraform Apply'
-#        run: terraform -chdir=./terraform/environment/prd/ apply -auto-approve
+      - name: 'Terraform Apply'
+        run: terraform -chdir=./terraform/environment/prd/ apply -auto-approve

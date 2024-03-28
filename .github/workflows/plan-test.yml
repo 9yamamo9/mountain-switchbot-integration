@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    name: 'TSC Build'
+    name: 'Build'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -76,6 +76,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build_artifact
+          path: build
 
       - name: 'Terraform init'
         run: terraform -chdir=./terraform/environment/prd/ init

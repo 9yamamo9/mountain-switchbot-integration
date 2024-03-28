@@ -1,5 +1,5 @@
 {
   "compilerOptions": {
-    "outDir": "../../build/webhook",
+    "outDir": "../../../build/webhook",
   }
 }
