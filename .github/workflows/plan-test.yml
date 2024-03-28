@@ -43,6 +43,8 @@ jobs:
     defaults:
       run:
         shell: bash
+    needs:
+      - build
 
     env:
       TF_TOKEN_app_terraform_io: ${{ secrets.TERRAFORM_API_TOKEN }}
