@@ -4,12 +4,12 @@ on:
   push: # FIXME: will delete if this workflow works
     branches:
       - name
-  pull_request:
-    types:
-      - opened
-      - reopened
-    branches:
-      - main
+#  pull_request:
+#    types:
+#      - opened
+#      - reopened
+#    branches:
+#      - main
 
 jobs:
   terraform:
