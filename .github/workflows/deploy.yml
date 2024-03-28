@@ -73,6 +73,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build_artifact
+          path: build
 
       - name: 'ls'
         run: ls -Gla
