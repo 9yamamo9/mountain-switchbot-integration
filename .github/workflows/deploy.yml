@@ -35,7 +35,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build_artifact
-          path: ../build
+          path: build
 
   terraform:
     name: 'Terraform Apply'
@@ -73,6 +73,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build_artifact
+
+      - name: 'ls'
+        run: ls -Gla
 
       - name: 'Terraform init'
         run: terraform -chdir=./terraform/environment/prd/ init
