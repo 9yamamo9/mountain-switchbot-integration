@@ -43,7 +43,7 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN }}
 
       - name: 'Terraform init'
-        run: terraform -chdir=./environment/prd/ init
+        run: terraform -chdir=./terraform/environment/prd/ init
 
       - name: 'Terraform Plan'
-        run: terraform -chdir=./environment/prd/ plan
+        run: terraform -chdir=./terraform/environment/prd/ plan
