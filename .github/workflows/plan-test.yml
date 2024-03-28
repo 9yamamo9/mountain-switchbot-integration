@@ -1,4 +1,4 @@
-name: ''
+name: 'Build and Terraform Plan when Pull Request on the main branch'
 
 on:
   push: # FIXME: will delete if this workflow works
