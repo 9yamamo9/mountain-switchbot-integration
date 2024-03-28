@@ -22,11 +22,19 @@ jobs:
       run:
         shell: bash
 
+    env:
+      TF_TOKEN_app_terraform_io: ${{ secrets.TERRAFORM_API_TOKEN }}
+
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: 'Set Up Terraform'
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: '1.7.4'
 
       - name: 'Set Up AWS Actions'
         uses: aws-actions/configure-aws-credentials@v4
@@ -34,6 +42,8 @@ jobs:
           aws-region: 'ap-northeast-1'
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN }}
 
-        # FIXME: will delete if this workflow works
-      - name: 'Get Caller Identity'
-        run: aws sts get-caller-identity
+      - name: 'Terraform init'
+        run: terraform -chdir=./environment/prd/ init
+
+      - name: 'Terraform Plan'
+        run: terraform -chdir=./environment/prd/ plan
