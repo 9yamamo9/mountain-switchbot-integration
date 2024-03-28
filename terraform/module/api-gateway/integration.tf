@@ -4,5 +4,5 @@ resource "aws_api_gateway_integration" "webhook" {
   http_method             = aws_api_gateway_method.webhook.http_method
   type                    = "AWS_PROXY"
   integration_http_method = "POST"
-  uri                     = "" // FIXME: when a lambda function is created
+  uri                     = var.switch_bot_invoke_arn
 }

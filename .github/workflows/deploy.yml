@@ -6,6 +6,31 @@ on:
       - main
 
 jobs:
+  build:
+    name: 'TSC Build'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: packages
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 'Set Up pnpm'
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: 'Install Node Modules'
+        run: pnpm install
+
+      - name: 'Build'
+        run: pnpm tsc --build
+
   terraform:
     name: 'Terraform Apply'
     runs-on: ubuntu-latest
@@ -42,5 +67,6 @@ jobs:
       - name: 'Terraform Plan'
         run: terraform -chdir=./terraform/environment/prd/ plan
 
-      - name: 'Terraform Apply'
-        run: terraform -chdir=./terraform/environment/prd/ apply -auto-approve
+# FIXME:
+#      - name: 'Terraform Apply'
+#        run: terraform -chdir=./terraform/environment/prd/ apply -auto-approve
