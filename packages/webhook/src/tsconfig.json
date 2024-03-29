@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "../../../build/webhook",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   }
 }

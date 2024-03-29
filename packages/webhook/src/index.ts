@@ -1,6 +1,6 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import { Event } from './type/switchbot/event'
-import { Device } from './entity/switchbot/device'
+import Device from './entity/switchbot/device'
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
 	const body = JSON.parse(event.body) as Event
