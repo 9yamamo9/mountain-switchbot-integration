@@ -1,5 +1,7 @@
 import Device from './device'
+import { DeviceItem } from '../../type/database/dynamodb/device'
 
 export interface IDeviceDatabase {
-	register: (device: Device) => Promise<void>
+	getItem: (deviceId: string) => Promise<DeviceItem | undefined>
+	register: (device: Device, messageId: string) => Promise<void>
 }
