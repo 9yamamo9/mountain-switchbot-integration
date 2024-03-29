@@ -1,14 +1,15 @@
 import 'reflect-metadata'
-import { describe, expect, test, vi } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import { IDeviceDatabase } from '../../entity/switchbot/deviceDatabaseInterface'
 import Device from '../../entity/switchbot/device'
 import { container } from 'tsyringe'
 import { DeviceItem, DeviceStatusMap } from '../../type/database/dynamodb/device'
 import { IDeviceQueue } from '../../entity/switchbot/deviceQueueInterface'
+import { FinishStateMap } from '../../type/switchbot/finishState'
 
 class FakeDeviceDynamoDB implements IDeviceDatabase {
 	public getItem = async (deviceId: string): Promise<DeviceItem | undefined> => {
-		if (deviceId === 'dummyDevice') {
+		if (deviceId === 'dummyDeviceId') {
 			return {
 				id: deviceId,
 				status: DeviceStatusMap.Detect,
@@ -47,8 +48,10 @@ describe('notify', () => {
 			useClass: FakeDeviceQueue
 		})
 
-		const device = new Device('dummyDevice', 'Detect', 100)
+		const device = new Device('dummyDeviceId', DeviceStatusMap.NotDetect, 100)
 
-		await device.notify()
+		const actual = await device.notify()
+
+		expect(actual).toBe(FinishStateMap.RegisterForCreateMessage)
 	})
 })

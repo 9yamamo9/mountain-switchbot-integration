@@ -2,7 +2,7 @@ export interface DeviceItem {
 	id: string
 	status: DeviceStatus
 	battery: number
-	messageId?: string
+	messageId: string
 }
 
 export const DeviceStatusMap = {
