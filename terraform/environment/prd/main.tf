@@ -10,3 +10,8 @@ module "lambda_switchbot_webhook" {
   service       = local.service
   execution_arn = module.api_gateway.execution_arn
 }
+
+module "dynamodb" {
+  source  = "../../module/dynamodb"
+  service = local.service
+}
