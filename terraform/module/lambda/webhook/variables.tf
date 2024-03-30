@@ -17,3 +17,8 @@ variable "switchbot_device_table_name" {
   description = "Switchbot Device Table Name"
   type        = string
 }
+
+variable "switchbot_device_queue_arn" {
+  description = "Switchbot Device Queue ARN"
+  type        = string
+}
