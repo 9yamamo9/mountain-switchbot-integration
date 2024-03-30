@@ -1,0 +1,1 @@
+export const DEVICE_QUEUE_URL = process.env.DEIVCE_QUEUE_URL

@@ -1,0 +1,1 @@
+export const SWITCHBOT_DEVICE = process.env.SWITCHBOT_DEVICE_TABLE_NAME
