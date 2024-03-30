@@ -3,6 +3,6 @@
     "outDir": "../../../build/webhook",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "moduleResolution": "node16"
+    "moduleResolution": "bundler"
   }
 }
