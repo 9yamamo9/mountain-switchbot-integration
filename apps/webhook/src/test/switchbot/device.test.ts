@@ -37,9 +37,7 @@ class FakeDeviceDynamoDB implements IDeviceDatabase {
 		}
 	}
 
-	public register = async (device: Device) => {
-		console.log('device:', device)
-	}
+	public register = async (device: Device) => {}
 }
 
 class FakeDeviceQueue implements IDeviceQueue {
@@ -47,8 +45,7 @@ class FakeDeviceQueue implements IDeviceQueue {
 		return ''
 	}
 
-	public delete = async (messageId: string): Promise<void> => {
-	}
+	public delete = async (messageId: string): Promise<void> => {}
 
 	public isExist = async (messageId: string): Promise<boolean> => {
 		return messageId !== 'updateMessageId'
