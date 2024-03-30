@@ -3,7 +3,6 @@ import { DynamoDBDocumentClient, GetCommand, PutCommand } from '@aws-sdk/lib-dyn
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
 import { DeviceItem } from '../../type/database/dynamodb/device'
 import Device from '../../entity/switchbot/device'
-import { SERVICE } from '../../constant/common'
 import { SWITCHBOT_DEVICE } from '../../constant/database/dynamodb'
 
 export default class DeviceDynamoDB implements IDeviceDatabase {
@@ -15,7 +14,7 @@ export default class DeviceDynamoDB implements IDeviceDatabase {
 
 	public getItem = async (deviceId: string): Promise<DeviceItem> => {
 		const command = new GetCommand({
-			TableName: `${SERVICE}-${SWITCHBOT_DEVICE}`,
+			TableName: `${SWITCHBOT_DEVICE}`,
 			Key: {
 				Id: deviceId
 			}
@@ -28,7 +27,7 @@ export default class DeviceDynamoDB implements IDeviceDatabase {
 
 	public register = async (device: Device, messageId: string): Promise<void> => {
 		const command = new PutCommand({
-			TableName: `${SERVICE}-${SWITCHBOT_DEVICE}`,
+			TableName: `${SWITCHBOT_DEVICE}`,
 			Item: {
 				Id: device.id,
 				Status: device.status,

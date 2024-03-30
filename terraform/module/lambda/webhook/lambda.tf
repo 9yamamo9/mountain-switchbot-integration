@@ -6,6 +6,11 @@ resource "aws_lambda_function" "this" {
   runtime          = "nodejs20.x"
   timeout          = 29
   source_code_hash = data.archive_file.this.output_base64sha256
+  environment {
+    variables = {
+      SWITCHBOT_DEVICE_TABLE_NAME = var.switchbot_device_table_name
+    }
+  }
 }
 
 resource "aws_lambda_permission" "this" {

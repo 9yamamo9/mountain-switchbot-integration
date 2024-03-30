@@ -7,3 +7,13 @@ variable "execution_arn" {
   description = "API Gateway Execution ARN"
   type        = string
 }
+
+variable "switchbot_device_table_arn" {
+  description = "Switchbot Device Table ARN"
+  type        = string
+}
+
+variable "switchbot_device_table_name" {
+  description = "Switchbot Device Table Name"
+  type        = string
+}

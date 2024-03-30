@@ -1,1 +1,1 @@
-export const SWITCHBOT_DEVICE = 'switchbot-device'
+export const SWITCHBOT_DEVICE = process.env.SWITCHBOT_DEVICE_TABLE_NAME
