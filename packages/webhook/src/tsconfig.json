@@ -2,6 +2,7 @@
   "compilerOptions": {
     "outDir": "../../../build/webhook",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "moduleResolution": "node16"
   }
 }
