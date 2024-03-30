@@ -32,12 +32,12 @@ resource "aws_iam_role_policy" "main" {
       },
       {
         Effect = "Allow"
-        Actions = [
+        Action = [
           "sqs:SendMessage",
           "sqs:DeleteMessage",
           "sqs:ReceiveMessage",
         ]
-        Resources = [
+        Resource = [
           var.switchbot_device_queue_arn
         ]
       }
