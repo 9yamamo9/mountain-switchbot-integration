@@ -16,6 +16,22 @@ class FakeDeviceDynamoDB implements IDeviceDatabase {
 				battery: 100,
 				messageId: 'dummyMessageId'
 			}
+		} else if (deviceId === 'deleteDeviceId') {
+			return {
+				id: deviceId,
+				status: DeviceStatusMap.NotDetect,
+				battery: 100,
+				messageId: 'deleteMessageId'
+			}
+		} else if (deviceId === 'updateDeviceId') {
+			return {
+				id: deviceId,
+				status: DeviceStatusMap.NotDetect,
+				battery: 100,
+				messageId: 'updateMessageId'
+			}
+		} else if (deviceId === 'newDeviceId') {
+			return undefined
 		} else {
 			return undefined
 		}
@@ -31,17 +47,18 @@ class FakeDeviceQueue implements IDeviceQueue {
 		return ''
 	}
 
-	public delete = async (messageId: string): Promise<void> => {}
+	public delete = async (messageId: string): Promise<void> => {
+	}
 
 	public isExist = async (messageId: string): Promise<boolean> => {
-		return true
+		return messageId !== 'updateMessageId'
 	}
 }
 
 describe('notify', () => {
-	test('success to send a message that tell you to need to turn off air conditioning', async () => {
+	test('success to send a new message', async () => {
 		container.register('IDeviceDatabase', {
-			useClass: FakeDeviceDynamoDB,
+			useClass: FakeDeviceDynamoDB
 		})
 
 		container.register('IDeviceQueue', {
@@ -49,9 +66,53 @@ describe('notify', () => {
 		})
 
 		const device = new Device('dummyDeviceId', DeviceStatusMap.NotDetect, 100)
-
 		const actual = await device.notify()
 
-		expect(actual).toBe(FinishStateMap.RegisterForCreateMessage)
+		expect(actual).toEqual(FinishStateMap.RegisterForCreateMessage)
+	})
+
+	test('success to send a new message without a previous device.', async () => {
+		container.register('IDeviceDatabase', {
+			useClass: FakeDeviceDynamoDB
+		})
+
+		container.register('IDeviceQueue', {
+			useClass: FakeDeviceQueue
+		})
+
+		const device = new Device('newDeviceId', DeviceStatusMap.NotDetect, 100)
+		const actual = await device.notify()
+
+		expect(actual).toEqual(FinishStateMap.RegisterWithoutPreviousDevice)
+	})
+
+	test('success to delete a message that is not necessary.', async () => {
+		container.register('IDeviceDatabase', {
+			useClass: FakeDeviceDynamoDB
+		})
+
+		container.register('IDeviceQueue', {
+			useClass: FakeDeviceQueue
+		})
+
+		const device = new Device('deleteDeviceId', DeviceStatusMap.Detect, 100)
+		const actual = await device.notify()
+
+		expect(actual).toEqual(FinishStateMap.RegisterForDeleteMessage)
+	})
+
+	test('success to update a message for a previous message is not exits', async () => {
+		container.register('IDeviceDatabase', {
+			useClass: FakeDeviceDynamoDB
+		})
+
+		container.register('IDeviceQueue', {
+			useClass: FakeDeviceQueue
+		})
+
+		const device = new Device('updateDeviceId', DeviceStatusMap.NotDetect, 100)
+		const actual = await device.notify()
+
+		expect(actual).toEqual(FinishStateMap.RegisterForUpdateMessage)
 	})
 })
