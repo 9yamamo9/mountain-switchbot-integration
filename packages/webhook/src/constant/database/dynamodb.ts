@@ -1,1 +1,1 @@
-export const SWITCHBOT_DEVICE = 'Switchbot-Device'
+export const SWITCHBOT_DEVICE = 'switchbot-device'

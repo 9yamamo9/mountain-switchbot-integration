@@ -1,1 +1,1 @@
-export const SERVICE = 'Mountain'
+export const SERVICE = 'mountain'
