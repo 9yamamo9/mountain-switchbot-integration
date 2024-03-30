@@ -1,8 +1,8 @@
 export interface DeviceItem {
-	id: string
-	status: DeviceStatus
-	battery: number
-	messageId: string
+	Id: string
+	Status: DeviceStatus
+	Battery: number
+	MessageId: string
 }
 
 export const DeviceStatusMap = {

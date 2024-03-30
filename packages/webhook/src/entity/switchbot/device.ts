@@ -6,9 +6,9 @@ import { FinishState, FinishStateMap } from '../../type/switchbot/finishState'
 
 @autoInjectable()
 export default class Device {
-	private readonly id: string
-	private readonly status: string
-	private readonly battery: number
+	readonly id: string
+	readonly status: string
+	readonly battery: number
 	private readonly database?: IDeviceDatabase
 	private readonly queue?: IDeviceQueue
 
@@ -43,11 +43,11 @@ export default class Device {
 				return finishState
 			}
 
-			const latestMessageId = previousDevice.messageId
+			const latestMessageId = previousDevice.MessageId
 
 			switch (this.status) {
 				case DeviceStatusMap.Detect:
-					if (previousDevice.status === DeviceStatusMap.NotDetect) {
+					if (previousDevice.Status === DeviceStatusMap.NotDetect) {
 						const existMessage = await this.queue.isExist(latestMessageId)
 
 						if (existMessage) {
@@ -59,7 +59,7 @@ export default class Device {
 					break
 
 				case DeviceStatusMap.NotDetect:
-					if (previousDevice.status === DeviceStatusMap.Detect) {
+					if (previousDevice.Status === DeviceStatusMap.Detect) {
 						await this.queue.send(this)
 						finishState = FinishStateMap.RegisterForCreateMessage
 

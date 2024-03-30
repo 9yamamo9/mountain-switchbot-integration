@@ -11,24 +11,24 @@ class FakeDeviceDynamoDB implements IDeviceDatabase {
 	public getItem = async (deviceId: string): Promise<DeviceItem | undefined> => {
 		if (deviceId === 'dummyDeviceId') {
 			return {
-				id: deviceId,
-				status: DeviceStatusMap.Detect,
-				battery: 100,
-				messageId: 'dummyMessageId'
+				Id: deviceId,
+				Status: DeviceStatusMap.Detect,
+				Battery: 100,
+				MessageId: 'dummyMessageId'
 			}
 		} else if (deviceId === 'deleteDeviceId') {
 			return {
-				id: deviceId,
-				status: DeviceStatusMap.NotDetect,
-				battery: 100,
-				messageId: 'deleteMessageId'
+				Id: deviceId,
+				Status: DeviceStatusMap.NotDetect,
+				Battery: 100,
+				MessageId: 'deleteMessageId'
 			}
 		} else if (deviceId === 'updateDeviceId') {
 			return {
-				id: deviceId,
-				status: DeviceStatusMap.NotDetect,
-				battery: 100,
-				messageId: 'updateMessageId'
+				Id: deviceId,
+				Status: DeviceStatusMap.NotDetect,
+				Battery: 100,
+				MessageId: 'updateMessageId'
 			}
 		} else if (deviceId === 'newDeviceId') {
 			return undefined
