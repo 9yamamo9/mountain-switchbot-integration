@@ -60,7 +60,7 @@ export default class Device {
 
 				case DeviceStatusMap.NotDetect:
 					if (previousDevice.Status === DeviceStatusMap.Detect) {
-						await this.queue.send(this)
+						newestMessageId = await this.queue.send(this)
 						finishState = FinishStateMap.RegisterForCreateMessage
 
 					} else {
