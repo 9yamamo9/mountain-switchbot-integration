@@ -1,8 +1,8 @@
 import { autoInjectable, inject } from 'tsyringe'
 import { IDeviceDatabase } from './deviceDatabaseInterface'
-import { DeviceStatusMap } from '../../type/database/dynamodb/device'
 import { IDeviceQueue } from './deviceQueueInterface'
 import { FinishState, FinishStateMap } from '../../type/switchbot/finishState'
+import { DeviceStatusMap } from '../../type/switchbot/device'
 
 @autoInjectable()
 export default class Device {

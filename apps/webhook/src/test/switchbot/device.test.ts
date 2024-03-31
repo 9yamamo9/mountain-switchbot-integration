@@ -3,9 +3,9 @@ import { describe, expect, test } from 'vitest'
 import { IDeviceDatabase } from '../../entity/switchbot/deviceDatabaseInterface'
 import Device from '../../entity/switchbot/device'
 import { container } from 'tsyringe'
-import { DeviceStatusMap } from '../../type/database/dynamodb/device'
 import { IDeviceQueue } from '../../entity/switchbot/deviceQueueInterface'
 import { FinishStateMap } from '../../type/switchbot/finishState'
+import { DeviceStatusMap } from '../../type/switchbot/device'
 
 class FakeDeviceDynamoDB implements IDeviceDatabase {
 	public register = async (device: Device) => {}
