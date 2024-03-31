@@ -15,6 +15,16 @@ module "lambda_switchbot_webhook" {
   switchbot_device_queue_url  = module.sqs.switchbot_device_queue.url
 }
 
+module "lambda_subscribe_event" {
+  source                      = "../../module/lambda/subscribe-event"
+  service                     = local.service
+  enabled                     = false
+  switchbot_device_queue_arn  = module.sqs.switchbot_device_queue.arn
+  switchbot_device_queue_url  = module.sqs.switchbot_device_queue.url
+  switchbot_device_table_arn  = module.dynamodb.switchbot_device_table.arn
+  switchbot_device_table_name = module.dynamodb.switchbot_device_table.name
+}
+
 module "dynamodb" {
   source  = "../../module/dynamodb"
   service = local.service
