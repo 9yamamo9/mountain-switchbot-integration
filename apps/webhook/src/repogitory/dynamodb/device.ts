@@ -12,19 +12,6 @@ export default class DeviceDynamoDB implements IDeviceDatabase {
 		this.client = DynamoDBDocumentClient.from(new DynamoDBClient({}))
 	}
 
-	public getItem = async (deviceId: string): Promise<DeviceItem> => {
-		const command = new GetCommand({
-			TableName: `${SWITCHBOT_DEVICE}`,
-			Key: {
-				Id: deviceId
-			}
-		})
-
-		const response = await this.client.send(command)
-
-		return response.Item as DeviceItem
-	}
-
 	public register = async (device: Device, messageId: string): Promise<void> => {
 		const command = new PutCommand({
 			TableName: `${SWITCHBOT_DEVICE}`,
