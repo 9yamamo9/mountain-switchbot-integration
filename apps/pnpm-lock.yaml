@@ -8,6 +8,52 @@ importers:
 
   .: {}
 
+  subscribe-event/src:
+    dependencies:
+      '@aws-sdk/client-dynamodb':
+        specifier: ^3.540.0
+        version: 3.540.0
+      '@aws-sdk/client-sqs':
+        specifier: ^3.540.0
+        version: 3.540.0
+      '@aws-sdk/lib-dynamodb':
+        specifier: ^3.540.0
+        version: 3.540.0(@aws-sdk/client-dynamodb@3.540.0)
+      reflect-metadata:
+        specifier: ^0.2.2
+        version: 0.2.2
+      tsyringe:
+        specifier: ^4.8.0
+        version: 4.8.0
+    devDependencies:
+      '@types/aws-lambda':
+        specifier: ^8.10.136
+        version: 8.10.136
+      '@types/node':
+        specifier: ^20.11.30
+        version: 20.12.2
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^7.4.0
+        version: 7.4.0(@typescript-eslint/parser@7.4.0)(eslint@8.57.0)(typescript@5.4.3)
+      '@typescript-eslint/parser':
+        specifier: ^7.4.0
+        version: 7.4.0(eslint@8.57.0)(typescript@5.4.3)
+      esbuild:
+        specifier: ^0.20.2
+        version: 0.20.2
+      eslint:
+        specifier: ^8.57.0
+        version: 8.57.0
+      ts-node:
+        specifier: ^10.9.2
+        version: 10.9.2(@types/node@20.12.2)(typescript@5.4.3)
+      typescript:
+        specifier: ^5.4.3
+        version: 5.4.3
+      vitest:
+        specifier: ^1.4.0
+        version: 1.4.0(@types/node@20.12.2)
+
   webhook/src:
     dependencies:
       '@aws-sdk/client-dynamodb':

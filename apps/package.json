@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "webhook": "pnpm -F \"webhook\""
+    "webhook": "pnpm -F \"webhook\"",
+    "subscribe": "pnpm -F \"subscribe-event\""
   },
   "keywords": [],
   "author": "",
