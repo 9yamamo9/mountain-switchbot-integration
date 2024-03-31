@@ -1,1 +1,1 @@
-export const DEVICE_QUEUE_URL = process.env.DEIVCE_QUEUE_URL
+export const DEVICE_QUEUE_URL = process.env.SWITCHBOT_DEVICE_QUEUE_URL
