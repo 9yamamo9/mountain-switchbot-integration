@@ -6,7 +6,7 @@ export interface Event {
 interface EventContext {
 	deviceType: string
 	deviceMac: string
-	detectionState: string
+	detectionState: string // FIXME: convert DeviceStatus type
 	battery: number
 	timeOfSample: number
 }
