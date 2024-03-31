@@ -11,7 +11,8 @@ module "lambda_switchbot_webhook" {
   execution_arn               = module.api_gateway.execution_arn
   switchbot_device_table_arn  = module.dynamodb.switchbot_device_table.arn
   switchbot_device_table_name = module.dynamodb.switchbot_device_table.name
-  switchbot_device_queue_arn  = module.sqs.switchbot_device_queue_arn
+  switchbot_device_queue_arn  = module.sqs.switchbot_device_queue.arn
+  switchbot_device_queue_url  = module.sqs.switchbot_device_queue.url
 }
 
 module "dynamodb" {

@@ -22,3 +22,8 @@ variable "switchbot_device_queue_arn" {
   description = "Switchbot Device Queue ARN"
   type        = string
 }
+
+variable "switchbot_device_queue_url" {
+  description = "Switchbot Device Queue URL"
+  type        = string
+}

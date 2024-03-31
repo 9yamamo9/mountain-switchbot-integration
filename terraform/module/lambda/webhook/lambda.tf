@@ -9,6 +9,7 @@ resource "aws_lambda_function" "this" {
   environment {
     variables = {
       SWITCHBOT_DEVICE_TABLE_NAME = var.switchbot_device_table_name
+      SWITCHBOT_DEVICE_QUEUE_URL  = var.switchbot_device_queue_url
     }
   }
 }
