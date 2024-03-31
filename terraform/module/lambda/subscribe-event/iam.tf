@@ -34,6 +34,7 @@ resource "aws_iam_role_policy" "main" {
         Action = [
           "sqs:DeleteMessage",
           "sqs:ReceiveMessage",
+          "sqs:GetQueueAttributes"
         ]
         Resource = [
           var.switchbot_device_queue_arn
