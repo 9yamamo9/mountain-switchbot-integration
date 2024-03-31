@@ -24,42 +24,4 @@ export default class DeviceQueue implements IDeviceQueue {
 			throw e
 		}
 	}
-
-	public delete = async (messageId: string): Promise<void> => {
-		try {
-			const receiveCommand = new ReceiveMessageCommand({
-				QueueUrl: DEVICE_QUEUE_URL
-			})
-			const receiveCommandResponse = await this.client.send(receiveCommand)
-
-			const targetMessage = receiveCommandResponse.Messages.filter((message) => message.MessageId === messageId).at(0)
-
-			const deleteMessageCommand = new DeleteMessageCommand({
-				QueueUrl: DEVICE_QUEUE_URL,
-				ReceiptHandle: targetMessage.ReceiptHandle
-			})
-			await this.client.send(deleteMessageCommand)
-		} catch (e) {
-			throw e
-		}
-	}
-
-	public isExist = async (messageId: string): Promise<boolean> => {
-		try {
-			let hasTargetMessage = false
-
-			const command = new ReceiveMessageCommand({
-				QueueUrl: DEVICE_QUEUE_URL
-			})
-			const response = await this.client.send(command)
-
-			response.Messages.forEach((message) => {
-				if (message.MessageId === messageId) hasTargetMessage = true
-			})
-
-			return hasTargetMessage
-		} catch (e) {
-			throw e
-		}
-	}
 }
