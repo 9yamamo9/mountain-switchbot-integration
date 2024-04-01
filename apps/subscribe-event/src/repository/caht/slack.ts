@@ -8,13 +8,17 @@ export default class Slack implements IChat {
 	constructor() {
 		this.client = new RestClient('switchbot-subscriber', SLACK_WEBHOOK_BASE_URL)
 	}
+
 	public send = async (message: string): Promise<void> => {
 		const payload = JSON.stringify({
-			text: message
+			text: message,
+			blocks: [],
+			attachments: []
 		})
 
-		await this.client.create(SLACK_CHANNEL_RESOURCE, {
-			payload: payload
-		})
+		await this.client.create(
+			SLACK_CHANNEL_RESOURCE,
+			{ payload: payload }
+		)
 	}
 }
