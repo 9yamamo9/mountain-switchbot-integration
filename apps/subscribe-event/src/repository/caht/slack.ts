@@ -10,11 +10,9 @@ export default class Slack implements IChat {
 	}
 
 	public send = async (message: string): Promise<void> => {
-		const payload = JSON.stringify({
+		const payload = {
 			text: message,
-			blocks: [],
-			attachments: []
-		})
+		}
 
 		await this.client.create(
 			SLACK_CHANNEL_RESOURCE,
