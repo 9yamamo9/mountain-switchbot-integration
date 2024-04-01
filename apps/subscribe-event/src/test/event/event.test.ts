@@ -29,7 +29,7 @@ class FakeDeviceDatabase implements IDeviceDatabase {
 	}
 }
 
-class FakeChat implements IChat {
+class FakeSlack implements IChat {
 	public send = async (message: string): Promise<void> => {
 		return
 	}
@@ -42,7 +42,7 @@ describe('notify', () => {
 		})
 
 		container.register('IChat', {
-			useClass: FakeChat
+			useClass: FakeSlack
 		})
 
 		const event = new DeviceEvent('dummyMessageId', 'dummyDeviceId', DeviceStatusMap.NotDetect, 100)
@@ -57,7 +57,7 @@ describe('notify', () => {
 		})
 
 		container.register('IChat', {
-			useClass: FakeChat
+			useClass: FakeSlack
 		})
 
 		const event = new DeviceEvent('dummyMessageId', 'dummyNeedDeviceId', DeviceStatusMap.NotDetect, 100)
