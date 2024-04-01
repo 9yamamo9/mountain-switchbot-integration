@@ -23,6 +23,8 @@ module "lambda_subscribe_event" {
   switchbot_device_queue_url  = module.sqs.switchbot_device_queue.url
   switchbot_device_table_arn  = module.dynamodb.switchbot_device_table.arn
   switchbot_device_table_name = module.dynamodb.switchbot_device_table.name
+  slack_channel_resource      = var.slack_channel_resource
+  slack_webhook_base_url      = var.slack_webhook_base_url
 }
 
 module "dynamodb" {

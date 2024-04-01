@@ -1,0 +1,2 @@
+export const SLACK_WEBHOOK_BASE_URL = process.env.SLACK_WEBHOOK_BASE_URL
+export const SLACK_CHANNEL_RESOURCE = process.env.SLACK_CHANNEL_RESOURCE
