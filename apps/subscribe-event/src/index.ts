@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { SQSEvent } from 'aws-lambda'
 import { container } from 'tsyringe'
 import DeviceDynamoDB from './repository/dyanamodb/device'
