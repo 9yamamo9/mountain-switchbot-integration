@@ -19,7 +19,7 @@ export const handler = async (event: SQSEvent)=> {
 
 	for (const record of records) {
 		const messageId = record.messageId
-		const body = JSON.parse(record.body)
+		const body = JSON.parse(record.body) // FIXME: cast Type
 
 		const event = new DeviceEvent(messageId, body.Id, body.Status, body.Battery)
 
