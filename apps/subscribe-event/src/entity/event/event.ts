@@ -37,7 +37,6 @@ export default class DeviceEvent {
 
 		notifyStatus = NotifyStatusMap.Need
 
-		// TODO: send a notification message to a slack channel
 		await this.chat.send(`Haven't you forgot to turn off the air conditioning?`)
 
 		return notifyStatus
