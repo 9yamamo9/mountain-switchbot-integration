@@ -1,7 +1,7 @@
 module "api_gateway" {
   source                 = "../../module/api-gateway/"
   service                = local.service
-  deployment             = "20240328-2"
+  deployment             = "20240402-1"
   switch_bot_invoke_arn  = module.lambda_switchbot_webhook.invoke_arn
   nature_remo_invoke_arn = module.lambda_nature_remo.invoke_arn
 }
