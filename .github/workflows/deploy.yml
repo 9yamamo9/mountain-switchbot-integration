@@ -85,7 +85,7 @@ jobs:
         run: terraform -chdir=./terraform/environment/prd/ init
 
       - name: 'Terraform Plan'
-        run: terraform -chdir=./terraform/environment/prd/ plan -var "slack_webhook_base_url=${{ secrets.SLACK_WEBHOOK_BASE_URL }}" -var "slack_channel_resource=${{ secrets.SLACK_CHANNEL_RESOURCE }}"
+        run: terraform -chdir=./terraform/environment/prd/ plan -var "slack_webhook_base_url=${{ secrets.SLACK_WEBHOOK_BASE_URL }}" -var "slack_channel_resource=${{ secrets.SLACK_CHANNEL_RESOURCE }}" -var "nature_remo_api_token=${{ secrets.NATURE_REMO_API_TOKEN }}" -var "nature_appliance_nickname=${{ secrets.NATURE_APPLIANCE_NICKNAME }}"
 
       - name: 'Terraform Apply'
-        run: terraform -chdir=./terraform/environment/prd/ apply -auto-approve -var "slack_webhook_base_url=${{ secrets.SLACK_WEBHOOK_BASE_URL }}" -var "slack_channel_resource=${{ secrets.SLACK_CHANNEL_RESOURCE }}"
+        run: terraform -chdir=./terraform/environment/prd/ apply -auto-approve -var "slack_webhook_base_url=${{ secrets.SLACK_WEBHOOK_BASE_URL }}" -var "slack_channel_resource=${{ secrets.SLACK_CHANNEL_RESOURCE }}" -var "nature_remo_api_token=${{ secrets.NATURE_REMO_API_TOKEN }}" -var "nature_appliance_nickname=${{ secrets.NATURE_APPLIANCE_NICKNAME }}"
