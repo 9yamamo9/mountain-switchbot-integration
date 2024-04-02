@@ -8,6 +8,7 @@ resource "aws_api_gateway_deployment" "this" {
   }
 
   depends_on = [
-    aws_api_gateway_integration.webhook
+    aws_api_gateway_integration.webhook,
+    aws_api_gateway_integration.post_remote_controls_turn_off,
   ]
 }

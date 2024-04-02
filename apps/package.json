@@ -5,7 +5,8 @@
   "main": "index.ts",
   "scripts": {
     "webhook": "pnpm -F \"webhook\"",
-    "subscribe": "pnpm -F \"subscribe-event\""
+    "subscribe": "pnpm -F \"subscribe-event\"",
+    "nature": "pnpm -F \"nature-remo\""
   },
   "keywords": [],
   "author": "",
