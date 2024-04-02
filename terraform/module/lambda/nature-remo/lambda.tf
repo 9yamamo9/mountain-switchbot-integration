@@ -6,6 +6,12 @@ resource "aws_lambda_function" "this" {
   runtime          = "nodejs20.x"
   timeout          = 29
   source_code_hash = data.archive_file.this.output_base64sha256
+  environment {
+    variables = {
+      NATURE_REMO_API_TOKEN     = var.nature_remo_api_token
+      NATURE_APPLIANCE_NICKNAME = var.nature_appliance_nickname
+    }
+  }
 }
 
 resource "aws_lambda_permission" "this" {
