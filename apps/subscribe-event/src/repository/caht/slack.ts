@@ -10,6 +10,34 @@ export default class Slack implements IChat {
 	}
 
 	public send = async (message: string): Promise<void> => {
-		await this.client.send({ text: message })
+		await this.client.send({
+			text: message,
+			blocks: [
+				{
+					type: 'actions',
+					block_id: 'turn_off',
+					elements: [
+						{
+							type: 'button',
+							text: {
+								type: 'plain_text',
+								text: 'Turn Off'
+							},
+							style: 'primary',
+							value: 'turn_off'
+						},
+						{
+							type: 'button',
+							text: {
+								type: 'plain_text',
+								text: 'Ignore'
+							},
+							style: 'danger',
+							value: 'ignore'
+						}
+					]
+				}
+			]
+		})
 	}
 }
