@@ -1,8 +1,9 @@
 module "api_gateway" {
-  source                = "../../module/api-gateway/"
-  service               = local.service
-  deployment            = "20240328-2"
-  switch_bot_invoke_arn = module.lambda_switchbot_webhook.invoke_arn
+  source                 = "../../module/api-gateway/"
+  service                = local.service
+  deployment             = "20240328-2"
+  switch_bot_invoke_arn  = module.lambda_switchbot_webhook.invoke_arn
+  nature_remo_invoke_arn = module.lambda_nature_remo.invoke_arn
 }
 
 module "lambda_switchbot_webhook" {
@@ -25,6 +26,12 @@ module "lambda_subscribe_event" {
   switchbot_device_table_name = module.dynamodb.switchbot_device_table.name
   slack_channel_resource      = var.slack_channel_resource
   slack_webhook_base_url      = var.slack_webhook_base_url
+}
+
+module "lambda_nature_remo" {
+  source        = "../../module/lambda/nature-remo"
+  service       = local.service
+  execution_arn = module.api_gateway.execution_arn
 }
 
 module "dynamodb" {
