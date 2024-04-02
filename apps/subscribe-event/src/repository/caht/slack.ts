@@ -14,6 +14,13 @@ export default class Slack implements IChat {
 			text: message,
 			blocks: [
 				{
+					type: 'section',
+					text: {
+						type: 'mrkdwn',
+						text: message
+					}
+				},
+				{
 					type: 'actions',
 					block_id: 'turn_off',
 					elements: [
