@@ -18,31 +18,16 @@ export default class Slack implements IChat {
 					text: {
 						type: 'mrkdwn',
 						text: message
-					}
-				},
-				{
-					type: 'actions',
-					block_id: 'turn_off',
-					elements: [
-						{
-							type: 'button',
-							text: {
-								type: 'plain_text',
-								text: 'Turn Off'
-							},
-							style: 'primary',
-							value: 'turn_off'
+					},
+					accessory: {
+						type: 'button',
+						text: {
+							type: 'plain_text',
+							text: 'Turn Off'
 						},
-						{
-							type: 'button',
-							text: {
-								type: 'plain_text',
-								text: 'Ignore'
-							},
-							style: 'danger',
-							value: 'ignore'
-						}
-					]
+						style: 'primary',
+						value: 'turn_off'
+					}
 				}
 			]
 		})
