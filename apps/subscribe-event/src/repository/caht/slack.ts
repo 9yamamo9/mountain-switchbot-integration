@@ -1,22 +1,15 @@
 import { IChat } from '../../entity/event/chatInterface'
-import { RestClient } from 'typed-rest-client'
 import { SLACK_CHANNEL_RESOURCE, SLACK_WEBHOOK_BASE_URL } from '../../constant/chat/slack'
+import { IncomingWebhook } from '@slack/webhook'
 
 export default class Slack implements IChat {
-	private readonly client: RestClient
+	private readonly client: IncomingWebhook
 
 	constructor() {
-		this.client = new RestClient('switchbot-subscriber', SLACK_WEBHOOK_BASE_URL)
+		this.client = new IncomingWebhook(`${SLACK_WEBHOOK_BASE_URL}${SLACK_CHANNEL_RESOURCE}`)
 	}
 
 	public send = async (message: string): Promise<void> => {
-		const payload = {
-			text: message,
-		}
-
-		await this.client.create(
-			SLACK_CHANNEL_RESOURCE,
-			{ payload: payload }
-		)
+		await this.client.send({ text: message })
 	}
 }
