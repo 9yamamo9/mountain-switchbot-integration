@@ -11,7 +11,10 @@ export default class NatureRemoteControl implements IRemoteControl {
 	}
 
 	public turnOff = async (nickname: string): Promise<void> => {
-		const response = await this.client.get<NatureAppliance[]>('/1/appliances')
+		const response = await this.client.get<NatureAppliance[]>(
+			'/1/appliances',
+			{ additionalHeaders: { Authorization: `Bearer ${NATURE_REMO_API_TOKEN}` }}
+		)
 		const appliances = response.result
 
 		for (const appliance of appliances) {
