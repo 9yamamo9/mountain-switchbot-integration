@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
+    "type-check": "tsc -noEmit",
     "test": "vitest run",
     "test-watch": "vitest",
-    "build": "tsc -noEmit && esbuild index.ts --bundle --minify --sourcemap --platform=node --outfile=../../../build/nature-remo/index.js"
+    "build": "esbuild index.ts --bundle --minify --sourcemap --platform=node --outfile=../../../build/nature-remo/index.js"
   },
   "keywords": [],
   "author": "",

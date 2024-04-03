@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
+    "type-check": "tsc -noEmit",
     "test": "vitest run",
     "test-watch": "vitest",
-    "build": "tsc -noEmit && esbuild index.ts --bundle --minify --sourcemap --platform=node --outfile=../../../build/webhook/index.js"
+    "build": "esbuild index.ts --bundle --minify --sourcemap --platform=node --outfile=../../../build/webhook/index.js"
   },
   "keywords": [],
   "author": "",
