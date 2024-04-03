@@ -5,6 +5,7 @@ on:
     types:
       - opened
       - reopened
+      - synchronize
     branches:
       - main
 
@@ -30,15 +31,16 @@ jobs:
 
       - name: 'Install Node Modules'
         run: |
+          pnpm install
           pnpm webhook install
           pnpm subscribe install
           pnpm nature install
 
+      - name: 'Test'
+        run: pnpm test
+
       - name: 'Build'
-        run: |
-          pnpm webhook build
-          pnpm subscribe build
-          pnpm nature build
+        run: pnpm build
 
       - name: 'Upload Artifacts'
         uses: actions/upload-artifact@v4

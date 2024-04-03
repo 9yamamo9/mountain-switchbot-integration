@@ -138,6 +138,9 @@ dist
 # TypeScript
 build
 
+# Turbo
+.turbo
+
 # Editor
 .idea
 

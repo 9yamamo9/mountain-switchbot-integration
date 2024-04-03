@@ -6,7 +6,9 @@
   "scripts": {
     "webhook": "pnpm -F \"webhook\"",
     "subscribe": "pnpm -F \"subscribe-event\"",
-    "nature": "pnpm -F \"nature-remo\""
+    "nature": "pnpm -F \"nature-remo\"",
+    "test": "turbo run test",
+    "build": "turbo run build"
   },
   "keywords": [],
   "author": "",
