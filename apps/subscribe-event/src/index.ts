@@ -13,7 +13,7 @@ container.register('IChat', {
 	useClass: Slack
 })
 
-export const handler = async (event: SQSEvent)=> {
+export const handler = async (event: SQSEvent) => {
 	console.log('event: ', JSON.stringify(event))
 
 	const records = event.Records
@@ -24,6 +24,10 @@ export const handler = async (event: SQSEvent)=> {
 
 		const event = new DeviceEvent(messageId, body.Id, body.Status, body.Battery)
 
-		await event.notify()
+		try {
+			await event.notify()
+		} catch (e) {
+			console.error(e)
+		}
 	}
 }
