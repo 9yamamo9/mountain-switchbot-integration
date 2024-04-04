@@ -3,6 +3,8 @@ import { IDeviceDatabase } from './deviceDatabaseInterface'
 import { IDeviceQueue } from './deviceQueueInterface'
 import { FinishState, FinishStateMap } from '../../type/switchbot/finishState'
 import { DeviceStatusMap } from '../../type/switchbot/device'
+import { BaseErrorWithStatusCode } from '../../lib/error'
+import { DeviceError } from './error'
 
 @autoInjectable()
 export default class Device {
@@ -46,7 +48,21 @@ export default class Device {
 
 			return finishState
 		} catch (e) {
-			throw e
+			if (e instanceof BaseErrorWithStatusCode) {
+				console.error(
+					`Failed to register a switchbot device event to a infrastructure resource: ${e.message},
+					name: ${e.name}, status code: ${e.statusCode}, stack: ${e.stack}`
+				)
+
+				throw new DeviceError(
+					e.statusCode,
+					100001,
+					`Failed to register a switchbot device event to a infrastructure resource`
+				)
+			} else {
+				console.error(`Happened unknown error: ${e}`)
+				throw e
+			}
 		}
 	}
 }
