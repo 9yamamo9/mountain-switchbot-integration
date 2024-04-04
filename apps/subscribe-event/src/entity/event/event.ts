@@ -2,6 +2,8 @@ import { autoInjectable, inject } from 'tsyringe'
 import { IDeviceDatabase } from './deviceDatabaseInterface'
 import { NotifyStatus, NotifyStatusMap } from '../../type/event/notifyStatus'
 import { IChat } from './chatInterface'
+import { BaseErrorWithStatusCode } from '../../lib/error'
+import { DeviceEventNotifyError } from './error'
 
 @autoInjectable()
 export default class DeviceEvent {
@@ -29,16 +31,29 @@ export default class DeviceEvent {
 	}
 
 	public notify = async (): Promise<NotifyStatus> => {
-		let notifyStatus: NotifyStatus = NotifyStatusMap.NotNeed
+		try {
 
-		const latestDeviceItem = await this.database.getItem(this.deviceId)
+			let notifyStatus: NotifyStatus = NotifyStatusMap.NotNeed
 
-		if (latestDeviceItem.MessageId !== this.id) return notifyStatus
+			const latestDeviceItem = await this.database.getItem(this.deviceId)
 
-		notifyStatus = NotifyStatusMap.Need
+			if (latestDeviceItem.MessageId !== this.id) return notifyStatus
 
-		await this.chat.send(`Haven't you forgot to turn off the air conditioning?`)
+			notifyStatus = NotifyStatusMap.Need
 
-		return notifyStatus
+			await this.chat.send(`Haven't you forgot to turn off the air conditioning?`)
+
+			return notifyStatus
+
+		} catch (e) {
+			if (e instanceof BaseErrorWithStatusCode) {
+				console.error(
+					`Failed to notify: ${e.message},
+					messageId: ${this.id}, deviceId: ${this.deviceId}`
+				)
+
+				throw new DeviceEventNotifyError(500, 100001, 'Failed to notify')
+			}
+		}
 	}
 }
