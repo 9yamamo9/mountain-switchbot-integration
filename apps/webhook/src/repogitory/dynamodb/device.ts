@@ -3,7 +3,7 @@ import { DynamoDBDocumentClient, PutCommand } from '@aws-sdk/lib-dynamodb'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
 import Device from '../../entity/switchbot/device'
 import { SWITCHBOT_DEVICE } from '../../constant/database/dynamodb'
-import { DeviceDynamoDBError } from './error'
+import { RegisterError } from '../../lib/error/database'
 
 export default class DeviceDynamoDB implements IDeviceDatabase {
 	private readonly client: DynamoDBDocumentClient
@@ -29,9 +29,11 @@ export default class DeviceDynamoDB implements IDeviceDatabase {
 			if (e instanceof Error) {
 				console.error(
 					`Filed to put a item to ${SWITCHBOT_DEVICE}: ${e.message},
-					 deviceId: ${device.id} deviceStatus: ${device.status} messageId: ${messageId}`
+					 deviceId: ${device.id} deviceStatus: ${device.status} messageId: ${messageId},
+					 stack: ${e.stack}`
 				)
-				throw new DeviceDynamoDBError(500, 'Failed to register a record to a database')
+
+				throw new RegisterError(500, 'Failed to register a record to a database')
 			}
 		}
 	}

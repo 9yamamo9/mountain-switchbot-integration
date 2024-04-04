@@ -3,8 +3,9 @@ import { IDeviceDatabase } from './deviceDatabaseInterface'
 import { IDeviceQueue } from './deviceQueueInterface'
 import { FinishState, FinishStateMap } from '../../type/switchbot/finishState'
 import { DeviceStatusMap } from '../../type/switchbot/device'
-import { BaseErrorWithStatusCode } from '../../lib/error'
-import { DeviceError } from './error'
+import { SendMessageError } from '../../lib/error/queue'
+import { NotifyError } from '../../lib/error/device'
+import { RegisterError } from '../../lib/error/database'
 
 @autoInjectable()
 export default class Device {
@@ -29,40 +30,48 @@ export default class Device {
 	}
 
 	public notify = async (): Promise<FinishState> => {
-		try {
-			let latestMessageId = 'none'
-			let finishState: FinishState = FinishStateMap.Nothing
+		let latestMessageId = 'none'
+		let finishState: FinishState = FinishStateMap.Nothing
 
-			switch (this.status) {
-				case DeviceStatusMap.Detect:
-					break
-				case DeviceStatusMap.NotDetect:
+		switch (this.status) {
+			case DeviceStatusMap.Detect:
+				break
+
+			case DeviceStatusMap.NotDetect:
+				try {
 					latestMessageId = await this.queue.send(this)
-					finishState = FinishStateMap.RegisterForCreateMessage
-					break
-				default:
-					break
-			}
+				} catch (e) {
+					if (e instanceof SendMessageError) {
+						console.error(`Failed to notify a switchbot device event by ${e.name}`)
+						throw new NotifyError(
+							e.statusCode,
+							100001,
+							`Failed to notify a switchbot device event by ${e.name}`
+						)
+					}
+				}
 
+				finishState = FinishStateMap.RegisterForCreateMessage
+
+				break
+
+			default:
+				break
+		}
+
+		try {
 			await this.database.register(this, latestMessageId)
-
-			return finishState
 		} catch (e) {
-			if (e instanceof BaseErrorWithStatusCode) {
-				console.error(
-					`Failed to register a switchbot device event to a infrastructure resource: ${e.message},
-					name: ${e.name}, status code: ${e.statusCode}, stack: ${e.stack}`
-				)
-
-				throw new DeviceError(
+			if (e instanceof RegisterError) {
+				console.error(`Failed to notify a switchbot device event by ${e.name}`)
+				throw new NotifyError(
 					e.statusCode,
 					100001,
-					`Failed to register a switchbot device event to a infrastructure resource`
+					`Failed to notify a switchbot device event by ${e.name}`
 				)
-			} else {
-				console.error(`Happened unknown error: ${e}`)
-				throw e
 			}
 		}
+
+		return finishState
 	}
 }
