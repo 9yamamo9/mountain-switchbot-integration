@@ -2,8 +2,10 @@ import { autoInjectable, inject } from 'tsyringe'
 import { IDeviceDatabase } from './deviceDatabaseInterface'
 import { NotifyStatus, NotifyStatusMap } from '../../type/event/notifyStatus'
 import { IChat } from './chatInterface'
-import { BaseErrorWithStatusCode } from '../../lib/error'
-import { DeviceEventNotifyError } from './error'
+import { DeviceItem } from '../../type/database/dynamodb/device'
+import { GetItemError } from '../../lib/error/database'
+import { SendMessageError } from '../../lib/error/chat'
+import { NotifyError } from '../../lib/error/event'
 
 @autoInjectable()
 export default class DeviceEvent {
@@ -31,29 +33,41 @@ export default class DeviceEvent {
 	}
 
 	public notify = async (): Promise<NotifyStatus> => {
+		let latestDeviceItem: DeviceItem
+		let notifyStatus: NotifyStatus = NotifyStatusMap.NotNeed
+
 		try {
-
-			let notifyStatus: NotifyStatus = NotifyStatusMap.NotNeed
-
-			const latestDeviceItem = await this.database.getItem(this.deviceId)
-
-			if (latestDeviceItem.MessageId !== this.id) return notifyStatus
-
-			notifyStatus = NotifyStatusMap.Need
-
-			await this.chat.send(`Haven't you forgot to turn off the air conditioning?`)
-
-			return notifyStatus
-
+			latestDeviceItem = await this.database.getItem(this.deviceId)
 		} catch (e) {
-			if (e instanceof BaseErrorWithStatusCode) {
-				console.error(
-					`Failed to notify: ${e.message},
-					messageId: ${this.id}, deviceId: ${this.deviceId}`
-				)
+			if (e instanceof GetItemError) {
+				console.error(`Failed to notify a message by ${e.name}`)
 
-				throw new DeviceEventNotifyError(500, 100001, 'Failed to notify')
+				throw new NotifyError(
+					e.statusCode,
+					100001,
+					`Failed to notify a message by ${e.name}`
+				)
 			}
 		}
+
+		if (latestDeviceItem.MessageId !== this.id) return notifyStatus
+
+		notifyStatus = NotifyStatusMap.Need
+
+		try {
+			await this.chat.send(`Haven't you forgot to turn off the air conditioning?`)
+		} catch (e) {
+			if (e instanceof SendMessageError) {
+				console.error(`Failed to notify a message by ${e.name}`)
+
+				throw new NotifyError(
+					e.statusCode,
+					100001,
+					`Failed to notify a message by ${e.name}`
+				)
+			}
+		}
+
+		return notifyStatus
 	}
 }

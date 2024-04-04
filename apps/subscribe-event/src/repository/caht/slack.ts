@@ -1,7 +1,7 @@
 import { IChat } from '../../entity/event/chatInterface'
 import { SLACK_CHANNEL_RESOURCE, SLACK_WEBHOOK_BASE_URL } from '../../constant/chat/slack'
 import { IncomingWebhook } from '@slack/webhook'
-import { SlackSendError } from './error'
+import { SendMessageError } from '../../lib/error/chat'
 
 export default class Slack implements IChat {
 	private readonly client: IncomingWebhook
@@ -12,7 +12,6 @@ export default class Slack implements IChat {
 
 	public send = async (message: string): Promise<void> => {
 		try {
-
 			await this.client.send({
 				text: message,
 				blocks: [
@@ -34,10 +33,11 @@ export default class Slack implements IChat {
 					}
 				]
 			})
-
 		} catch (e) {
-			console.error(`Failed to send a message to Slack channel: ${e}`)
-			throw new SlackSendError(500, 'Failed to send a message to Slack channel')
+			if (e instanceof Error) {
+				console.error(`Failed to send a message to Slack channel: ${e.message}`)
+				throw new SendMessageError(500, 'Failed to send a message to Slack channel')
+			}
 		}
 	}
 }

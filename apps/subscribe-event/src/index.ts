@@ -4,6 +4,8 @@ import { container } from 'tsyringe'
 import DeviceDynamoDB from './repository/dyanamodb/device'
 import Slack from './repository/caht/slack'
 import DeviceEvent from './entity/event/event'
+import instance from 'tsyringe/dist/typings/dependency-container'
+import { NotifyError } from './lib/error/event'
 
 container.register('IDeviceDatabase', {
 	useClass: DeviceDynamoDB
@@ -27,7 +29,9 @@ export const handler = async (event: SQSEvent) => {
 		try {
 			await event.notify()
 		} catch (e) {
-			console.error(e)
+			if (e instanceof NotifyError) {
+				console.error(`Failed to notify a message that the status of ${event.deviceId} is detected, service code: ${e.serviceCode}`)
+			}
 		}
 	}
 }
