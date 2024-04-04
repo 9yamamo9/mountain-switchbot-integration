@@ -4,6 +4,8 @@ import Nature from './entity/nature'
 import { NATURE_APPLIANCE_NICKNAME } from './constant/nature/nature'
 import { container } from 'tsyringe'
 import NatureRemoteControl from './repository/control/nature'
+import { BaseErrorWithServiceCode } from './lib/error/base'
+import { messageResponse, messageResponseWithServiceCode } from './lib/response'
 
 container.register('IRemoteControl', {
 	useClass: NatureRemoteControl
@@ -16,10 +18,19 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
 
 	const nature = new Nature(NATURE_APPLIANCE_NICKNAME)
 
-	await nature.turnOff()
-
-	return {
-		statusCode: 201,
-		body: JSON.stringify({ message: 'Hello World!' })
+	try {
+		await nature.turnOff()
+	} catch (e) {
+		if (e instanceof BaseErrorWithServiceCode) {
+			return messageResponseWithServiceCode(
+				e.serviceCode,
+				e.serviceCode,
+				'Failed to turn off an air conditioning'
+			)
+		} else {
+			return messageResponse(500, 'Unknown Error')
+		}
 	}
+
+	return messageResponse(201, 'Turn off an air conditioning')
 }
