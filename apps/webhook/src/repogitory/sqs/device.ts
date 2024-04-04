@@ -1,9 +1,9 @@
 import { IDeviceQueue } from '../../entity/switchbot/deviceQueueInterface'
-import { DeleteMessageCommand, ReceiveMessageCommand, SendMessageCommand, SQSClient } from '@aws-sdk/client-sqs'
+import { SendMessageCommand, SQSClient } from '@aws-sdk/client-sqs'
 import Device from '../../entity/switchbot/device'
 import { DEVICE_QUEUE_URL } from '../../constant/queue/sqs'
 import { DeviceMessage } from '../../type/queue/sqs/device'
-import { DeviceQueueError } from './error'
+import { SendMessageError } from '../../lib/error/queue'
 
 export default class DeviceQueue implements IDeviceQueue {
 	private readonly client: SQSClient
@@ -26,9 +26,10 @@ export default class DeviceQueue implements IDeviceQueue {
 			if (e instanceof Error) {
 				console.error(
 					`Failed to send a message to ${DEVICE_QUEUE_URL}: ${e.message},
-					deviceId: ${device.id}, deviceStatus: ${device.status}`
+					deviceId: ${device.id}, deviceStatus: ${device.status},
+					stack: ${e.stack}`
 				)
-				throw new DeviceQueueError(500, 'Failed to send a message to a queue')
+				throw new SendMessageError(500, 'Failed to send a message to a queue')
 			}
 		}
 	}

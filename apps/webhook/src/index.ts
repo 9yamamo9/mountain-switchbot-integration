@@ -5,8 +5,8 @@ import Device from './entity/switchbot/device'
 import { container } from 'tsyringe'
 import DeviceDynamoDB from './repogitory/dynamodb/device'
 import DeviceQueue from './repogitory/sqs/device'
-import { BaseErrorWithServiceCode } from './lib/error'
 import { messageResponse, messageResponseWithServiceCode } from './lib/response'
+import { NotifyError } from './lib/error/device'
 
 container.register('IDeviceDatabase', {
 	useClass: DeviceDynamoDB
@@ -24,7 +24,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
 	try {
 		await device.notify()
 	} catch (e) {
-		if (e instanceof BaseErrorWithServiceCode) {
+		if (e instanceof NotifyError) {
 			console.error(
 				`Failed to notify a switchbot device event: ${e.message}, name: ${e.name}, service code: ${e.serviceCode}`
 			)
