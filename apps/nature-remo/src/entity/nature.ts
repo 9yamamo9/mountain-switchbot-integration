@@ -1,6 +1,7 @@
-import { RestClient } from 'typed-rest-client'
 import { autoInjectable, inject } from 'tsyringe'
 import { IRemoteControl } from './remoteControlInterface'
+import { BaseErrorWithServiceCode } from '../lib/error/base'
+import { NatureControlError } from '../lib/error/nature'
 
 @autoInjectable()
 export default class Nature {
@@ -16,6 +17,13 @@ export default class Nature {
 	}
 
 	public turnOff = async (): Promise<void> => {
-		await this.control.turnOff(this.nickname)
+		try {
+			await this.control.turnOff(this.nickname)
+		} catch (e) {
+			if (e instanceof BaseErrorWithServiceCode) {
+				console.error(`Filed to turn off an air conditioning: ${e.message}`)
+				throw new NatureControlError(e.serviceCode, 100001, `Failed to control an appliance`)
+			}
+		}
 	}
 }
