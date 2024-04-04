@@ -23,9 +23,9 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
 	} catch (e) {
 		if (e instanceof BaseErrorWithServiceCode) {
 			return messageResponseWithServiceCode(
+				e.statusCode,
 				e.serviceCode,
-				e.serviceCode,
-				'Failed to turn off an air conditioning'
+				'Faiqled to turn off an air conditioning'
 			)
 		} else {
 			return messageResponse(500, 'Unknown Error')
