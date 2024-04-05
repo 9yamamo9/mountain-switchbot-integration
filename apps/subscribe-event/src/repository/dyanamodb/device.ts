@@ -29,8 +29,13 @@ export default class DeviceDynamoDB implements IDeviceDatabase {
 					`Failed to get a item from ${SWITCHBOT_DEVICE}: ${e.message}, deviceId: ${deviceId}, stack: ${e.stack}`
 				)
 
-				throw new GetItemError(500, `Failed to get a get a item from ${SWITCHBOT_DEVICE}`)
+				throw new GetItemError(500, `Failed to get a item from ${SWITCHBOT_DEVICE}`)
 			}
+
+			throw new GetItemError(
+				500,
+				`Failed to get a item by unknown error: ${e}`
+			)
 		}
 
 		return deviceItem
