@@ -5,8 +5,8 @@ import Device from './entity/switchbot/device'
 import { container } from 'tsyringe'
 import DeviceDynamoDB from './repogitory/dynamodb/device'
 import DeviceQueue from './repogitory/sqs/device'
-import { messageResponse, messageResponseWithServiceCode } from './lib/response'
 import { NotifyError } from './lib/error/device'
+import { messageResponse, messageResponseWithServiceCode } from 'base-response'
 
 container.register('IDeviceDatabase', {
 	useClass: DeviceDynamoDB
