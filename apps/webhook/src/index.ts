@@ -7,7 +7,7 @@ import DeviceDynamoDB from './repogitory/dynamodb/device'
 import DeviceQueue from './repogitory/sqs/device'
 import { NotifyError } from './lib/error/device'
 import { messageResponse, messageResponseWithServiceCode } from 'base-response'
-import { RepositoryCallErrorWithServiceCode } from './lib/error/base'
+import { RepositoryCallErrorWithServiceCode } from 'base-error'
 
 container.register('IDeviceDatabase', {
 	useClass: DeviceDynamoDB

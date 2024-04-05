@@ -6,7 +6,7 @@ import { DeviceStatusMap } from '../../type/switchbot/device'
 import { SendMessageError } from '../../lib/error/queue'
 import { NotifyError } from '../../lib/error/device'
 import { RegisterError } from '../../lib/error/database'
-import { RepositoryCallError, RepositoryCallErrorWithServiceCode } from '../../lib/error/base'
+import { RepositoryCallErrorWithServiceCode } from 'base-error'
 
 @autoInjectable()
 export default class Device {
