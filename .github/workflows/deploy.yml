@@ -26,11 +26,7 @@ jobs:
           version: 8
 
       - name: 'Install Node Modules'
-        run: |
-          pnpm install
-          pnpm webhook install
-          pnpm subscribe install
-          pnpm nature install
+        run: pnpm install
 
       - name: 'Build'
         run: pnpm build
