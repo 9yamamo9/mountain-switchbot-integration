@@ -1,7 +1,7 @@
 import { autoInjectable, inject } from 'tsyringe'
 import { IRemoteControl } from './remoteControlInterface'
-import { BaseErrorWithServiceCode } from '../lib/error/base'
 import { NatureControlError } from '../lib/error/nature'
+import { BaseErrorWithServiceCode } from 'base-error'
 
 @autoInjectable()
 export default class Nature {

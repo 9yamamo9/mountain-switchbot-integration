@@ -3,6 +3,7 @@
   "pipeline": {
     "type-check": {},
     "test": {
+      "inputs": ["test/**/*.test.ts"],
       "dependsOn": [
         "type-check"
       ]

@@ -1,4 +1,4 @@
-import { BaseErrorWithServiceCode, BaseErrorWithStatusCode } from './base'
+import { BaseErrorWithServiceCode, BaseErrorWithStatusCode } from 'base-error'
 
 export class NatureGetAppliancesError extends BaseErrorWithStatusCode {}
 export class NatureTurnOffError extends BaseErrorWithStatusCode {}

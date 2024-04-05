@@ -26,6 +26,7 @@
   "dependencies": {
     "reflect-metadata": "^0.2.2",
     "tsyringe": "^4.8.0",
-    "typed-rest-client": "^1.8.11"
+    "typed-rest-client": "^1.8.11",
+    "base-error": "workspace:*"
   }
 }
