@@ -4,8 +4,8 @@ import Nature from './entity/nature'
 import { NATURE_APPLIANCE_NICKNAME } from './constant/nature/nature'
 import { container } from 'tsyringe'
 import NatureRemoteControl from './repository/control/nature'
-import { messageResponse, messageResponseWithServiceCode } from './lib/response'
 import { BaseErrorWithServiceCode } from 'base-error'
+import { messageResponse, messageResponseWithServiceCode } from 'base-response'
 
 container.register('IRemoteControl', {
 	useClass: NatureRemoteControl

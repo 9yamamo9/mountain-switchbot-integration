@@ -17,6 +17,9 @@ importers:
       base-error:
         specifier: workspace:*
         version: link:../../packages/base-error
+      base-response:
+        specifier: workspace:*
+        version: link:../../packages/base-response
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
@@ -56,6 +59,37 @@ importers:
         version: 1.4.0(@types/node@20.12.2)
 
   packages/base-error:
+    devDependencies:
+      '@types/node':
+        specifier: ^20.11.30
+        version: 20.12.2
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^7.4.0
+        version: 7.4.0(@typescript-eslint/parser@7.4.0)(eslint@8.57.0)(typescript@5.4.3)
+      '@typescript-eslint/parser':
+        specifier: ^7.4.0
+        version: 7.4.0(eslint@8.57.0)(typescript@5.4.3)
+      esbuild:
+        specifier: ^0.20.2
+        version: 0.20.2
+      eslint:
+        specifier: ^8.57.0
+        version: 8.57.0
+      ts-node:
+        specifier: ^10.9.2
+        version: 10.9.2(@types/node@20.12.2)(typescript@5.4.3)
+      typescript:
+        specifier: ^5.4.3
+        version: 5.4.3
+      vitest:
+        specifier: ^1.4.0
+        version: 1.4.0(@types/node@20.12.2)
+
+  packages/base-response:
+    dependencies:
+      '@types/aws-lambda':
+        specifier: ^8.10.136
+        version: 8.10.136
     devDependencies:
       '@types/node':
         specifier: ^20.11.30
@@ -148,6 +182,9 @@ importers:
       base-error:
         specifier: workspace:*
         version: link:../../packages/base-error
+      base-response:
+        specifier: workspace:*
+        version: link:../../packages/base-response
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
@@ -1644,7 +1681,6 @@ packages:
 
   /@types/aws-lambda@8.10.136:
     resolution: {integrity: sha512-cmmgqxdVGhxYK9lZMYYXYRJk6twBo53ivtXjIUEFZxfxe4TkZTZBK3RRWrY2HjJcUIix0mdifn15yjOAat5lTA==}
-    dev: true
 
   /@types/estree@1.0.5:
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}

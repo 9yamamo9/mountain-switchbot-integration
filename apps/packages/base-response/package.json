@@ -1,5 +1,5 @@
 {
-  "name": "webhook",
+  "name": "base-response",
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",
@@ -7,13 +7,12 @@
     "type-check": "tsc -noEmit",
     "test": "vitest run",
     "test-watch": "vitest",
-    "build": "esbuild index.ts --bundle --minify --sourcemap --platform=node --outfile=../../../build/webhook/index.js"
+    "build": "esbuild index.ts --bundle --minify --sourcemap --platform=node --outfile=../../../build/common/base-response/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.136",
     "@types/node": "^20.11.30",
     "@typescript-eslint/eslint-plugin": "^7.4.0",
     "@typescript-eslint/parser": "^7.4.0",
@@ -24,12 +23,6 @@
     "vitest": "^1.4.0"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.540.0",
-    "@aws-sdk/client-sqs": "^3.540.0",
-    "@aws-sdk/lib-dynamodb": "^3.540.0",
-    "reflect-metadata": "^0.2.2",
-    "tsyringe": "^4.8.0",
-    "base-error": "workspace:*",
-    "base-response": "workspace:*"
+    "@types/aws-lambda": "^8.10.136"
   }
 }

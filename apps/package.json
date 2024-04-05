@@ -8,6 +8,7 @@
     "subscribe": "pnpm -F \"subscribe-event\"",
     "nature": "pnpm -F \"nature-remo\"",
     "error": "pnpm -F \"base-error\"",
+    "response": "pnpm -F \"base-response\"",
     "test": "turbo run test",
     "build": "turbo run build"
   },
