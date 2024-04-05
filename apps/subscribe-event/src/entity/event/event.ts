@@ -33,6 +33,10 @@ export default class DeviceEvent {
 		this.chat = chat
 	}
 
+	/**
+	 * @throws RepositoryCallErrorWithServiceCode
+	 * @throws NotifyError
+	 */
 	public notify = async (): Promise<NotifyStatus> => {
 		if (!this.database) {
 			console.error('the database repository can be undefined')
