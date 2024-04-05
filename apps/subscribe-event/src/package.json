@@ -29,6 +29,7 @@
     "@aws-sdk/lib-dynamodb": "^3.540.0",
     "@slack/webhook": "^7.0.2",
     "reflect-metadata": "^0.2.2",
-    "tsyringe": "^4.8.0"
+    "tsyringe": "^4.8.0",
+    "base-error": "workspace:*"
   }
 }

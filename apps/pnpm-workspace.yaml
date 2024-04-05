@@ -2,3 +2,4 @@ packages:
   - 'webhook/*'
   - 'subscribe-event/*'
   - 'nature-remo/*'
+  - 'packages/*'
