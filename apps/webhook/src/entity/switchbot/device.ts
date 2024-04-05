@@ -6,6 +6,7 @@ import { DeviceStatusMap } from '../../type/switchbot/device'
 import { SendMessageError } from '../../lib/error/queue'
 import { NotifyError } from '../../lib/error/device'
 import { RegisterError } from '../../lib/error/database'
+import { RepositoryCallError, RepositoryCallErrorWithServiceCode } from '../../lib/error/base'
 
 @autoInjectable()
 export default class Device {
@@ -30,6 +31,16 @@ export default class Device {
 	}
 
 	public notify = async (): Promise<FinishState> => {
+		if (!this.database) {
+			console.error('the database repository can be undefined')
+			throw new RepositoryCallErrorWithServiceCode(500, 100002, 'Can NOT call database repository')
+		}
+
+		if (!this.queue) {
+			console.error('the queue repository can be undefined')
+			throw new RepositoryCallErrorWithServiceCode(500, 100002, 'Can NOT call queue repository')
+		}
+
 		let latestMessageId = 'none'
 		let finishState: FinishState = FinishStateMap.Nothing
 
@@ -38,7 +49,10 @@ export default class Device {
 				break
 
 			case DeviceStatusMap.NotDetect:
+
+
 				try {
+
 					latestMessageId = await this.queue.send(this)
 				} catch (e) {
 					if (e instanceof SendMessageError) {

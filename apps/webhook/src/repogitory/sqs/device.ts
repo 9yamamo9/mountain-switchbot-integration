@@ -13,6 +13,8 @@ export default class DeviceQueue implements IDeviceQueue {
 	}
 
 	public send = async (device: Device): Promise<string> => {
+		let messageId = 'nothing'
+
 		const messageBody: DeviceMessage = { Id: device.id, Status: device.status, Battery: device.battery }
 		const command = new SendMessageCommand({
 			QueueUrl: DEVICE_QUEUE_URL,
@@ -21,7 +23,7 @@ export default class DeviceQueue implements IDeviceQueue {
 
 		try {
 			const response = await this.client.send(command)
-			return response.MessageId
+			messageId = response.MessageId || 'nothing'
 		} catch (e) {
 			if (e instanceof Error) {
 				console.error(
@@ -32,5 +34,7 @@ export default class DeviceQueue implements IDeviceQueue {
 				throw new SendMessageError(500, 'Failed to send a message to a queue')
 			}
 		}
+
+		return messageId
 	}
 }
