@@ -1,7 +1,7 @@
 import { autoInjectable, inject } from 'tsyringe'
 import { IRemoteControl } from './remoteControlInterface'
 import { NatureControlError } from '../lib/error/nature'
-import { BaseErrorWithServiceCode } from 'base-error'
+import { BaseErrorWithServiceCode, RepositoryCallErrorWithServiceCode } from 'base-error'
 
 @autoInjectable()
 export default class Nature {
@@ -16,7 +16,16 @@ export default class Nature {
 		this.control = control
 	}
 
+	/**
+	 * @throws RepositoryCallErrorWithServiceCode
+	 * @throws BaseErrorWithServiceCode
+	 */
 	public turnOff = async (): Promise<void> => {
+		if (!this.control) {
+			console.error('the control repository can be undefined')
+			throw new RepositoryCallErrorWithServiceCode(500, 100002, 'Can NOT call control repository')
+		}
+
 		try {
 			await this.control.turnOff(this.nickname)
 		} catch (e) {

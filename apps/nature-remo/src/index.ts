@@ -4,7 +4,7 @@ import Nature from './entity/nature'
 import { NATURE_APPLIANCE_NICKNAME } from './constant/nature/nature'
 import { container } from 'tsyringe'
 import NatureRemoteControl from './repository/control/nature'
-import { BaseErrorWithServiceCode } from 'base-error'
+import { BaseErrorWithServiceCode, RepositoryCallErrorWithServiceCode } from 'base-error'
 import { messageResponse, messageResponseWithServiceCode } from 'base-response'
 
 container.register('IRemoteControl', {
@@ -13,6 +13,12 @@ container.register('IRemoteControl', {
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
 	const body = event.body
+	if (!body) {
+		console.error(`event.body is null`)
+
+		return messageResponse(500, 'Request payload is unexpected')
+	}
+
 	const decodedBody = decodeURI(body)
 	console.log('decodedBody: ', decodedBody)
 
@@ -25,8 +31,16 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
 			return messageResponseWithServiceCode(
 				e.statusCode,
 				e.serviceCode,
-				'Faiqled to turn off an air conditioning'
+				'Failed to turn off an air conditioning'
 			)
+
+		} else if (e instanceof RepositoryCallErrorWithServiceCode) {
+			return messageResponseWithServiceCode(
+				e.statusCode,
+				e.serviceCode,
+				`Failed to call repository resource: ${e.message}`
+			)
+
 		} else {
 			return messageResponse(500, 'Unknown Error')
 		}
