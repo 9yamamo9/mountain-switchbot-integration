@@ -6,6 +6,7 @@ import Slack from './repository/caht/slack'
 import DeviceEvent from './entity/event/event'
 import instance from 'tsyringe/dist/typings/dependency-container'
 import { NotifyError } from './lib/error/event'
+import { RepositoryCallErrorWithServiceCode } from 'base-error'
 
 container.register('IDeviceDatabase', {
 	useClass: DeviceDynamoDB
@@ -31,6 +32,8 @@ export const handler = async (event: SQSEvent) => {
 		} catch (e) {
 			if (e instanceof NotifyError) {
 				console.error(`Failed to notify a message that the status of ${event.deviceId} is detected, service code: ${e.serviceCode}`)
+			} else if (e instanceof RepositoryCallErrorWithServiceCode) {
+				console.error(`Failed to call repository resource: ${e.message}`)
 			}
 		}
 	}

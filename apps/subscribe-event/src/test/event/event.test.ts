@@ -18,6 +18,7 @@ class FakeDeviceDatabase implements IDeviceDatabase {
 				MessageId: 'Noting'
 			}
 		}
+
 		if (deviceId === 'dummyNeedDeviceId') {
 			return {
 				Id: deviceId,
@@ -25,6 +26,13 @@ class FakeDeviceDatabase implements IDeviceDatabase {
 				Battery: 100,
 				MessageId: 'dummyMessageId'
 			}
+		}
+
+		return {
+			Id: 'nothing',
+			Status: DeviceStatusMap.NotDetect,
+			Battery: 0,
+			MessageId: 'nothing'
 		}
 	}
 }

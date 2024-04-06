@@ -20,7 +20,7 @@ export default class NatureRemoteControl implements IRemoteControl {
 				{ additionalHeaders: { Authorization: `Bearer ${NATURE_REMO_API_TOKEN}` } }
 			)
 
-			appliances = response.result
+			appliances = response.result || []
 
 		} catch (e) {
 			console.error(`Failed to get appliances from Nature Remo: ${e}`)
