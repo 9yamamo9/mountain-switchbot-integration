@@ -56,11 +56,16 @@ export default class DeviceEvent {
 			throw new RepositoryCallErrorWithServiceCode(500, 100002, 'Can NOT call chat repository')
 		}
 
+		if (!this.remoteControl) {
+			console.error('the remote control repository can be undefined')
+			throw new RepositoryCallErrorWithServiceCode(500, 100002, 'Can NOT call remote control repository')
+		}
+
 		let latestDeviceItem: DeviceItem
 		let notifyStatus: NotifyStatus = NotifyStatusMap.NotNeed
 
 		try {
-			const isAirConditioningWork = await this.remoteControl?.isWorking(this.nickname)
+			const isAirConditioningWork = await this.remoteControl.isWorking(this.nickname)
 			if (!isAirConditioningWork) return NotifyStatusMap.NotNeedWithTurningOn
 		} catch (e) {
 			if (e instanceof NatureGetAppliancesError) {
