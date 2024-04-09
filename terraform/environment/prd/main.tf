@@ -26,6 +26,8 @@ module "lambda_subscribe_event" {
   switchbot_device_table_name = module.dynamodb.switchbot_device_table.name
   slack_channel_resource      = var.slack_channel_resource
   slack_webhook_base_url      = var.slack_webhook_base_url
+  nature_remo_api_token       = var.nature_remo_api_token
+  nature_appliance_nickname   = var.nature_appliance_nickname
 }
 
 module "lambda_nature_remo" {
