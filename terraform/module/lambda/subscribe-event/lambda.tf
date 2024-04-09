@@ -12,6 +12,10 @@ resource "aws_lambda_function" "this" {
       SWITCHBOT_DEVICE_QUEUE_URL  = var.switchbot_device_queue_url
       SLACK_WEBHOOK_BASE_URL      = var.slack_webhook_base_url
       SLACK_CHANNEL_RESOURCE      = var.slack_channel_resource
+      // TODO: add environment variables for nature remo ap
+      // NATURE_APPLIANCE_NICKNAME
+      // NATURE_REMO_API_BASE_URL
+      // NATURE_REMO_API_TOKEN
     }
   }
 }

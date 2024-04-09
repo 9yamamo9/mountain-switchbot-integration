@@ -4,9 +4,10 @@ import { container } from 'tsyringe'
 import DeviceDynamoDB from './repository/dyanamodb/device'
 import Slack from './repository/caht/slack'
 import DeviceEvent from './entity/event/event'
-import instance from 'tsyringe/dist/typings/dependency-container'
 import { NotifyError } from './lib/error/event'
 import { RepositoryCallErrorWithServiceCode } from 'base-error'
+import { NATURE_APPLIANCE_NICKNAME } from './constant/nature/nature'
+import NatureRemoteControl from './repository/remoteControl/nature'
 
 container.register('IDeviceDatabase', {
 	useClass: DeviceDynamoDB
@@ -14,6 +15,10 @@ container.register('IDeviceDatabase', {
 
 container.register('IChat', {
 	useClass: Slack
+})
+
+container.register('IRemoteControl', {
+	useClass: NatureRemoteControl
 })
 
 export const handler = async (event: SQSEvent) => {
@@ -25,7 +30,7 @@ export const handler = async (event: SQSEvent) => {
 		const messageId = record.messageId
 		const body = JSON.parse(record.body) // FIXME: cast Type
 
-		const event = new DeviceEvent(messageId, body.Id, body.Status, body.Battery)
+		const event = new DeviceEvent(messageId, body.Id, body.Status, body.Battery, NATURE_APPLIANCE_NICKNAME)
 
 		try {
 			await event.notify()

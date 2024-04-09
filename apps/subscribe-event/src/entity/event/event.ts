@@ -7,6 +7,8 @@ import { GetItemError } from '../../lib/error/database'
 import { SendMessageError } from '../../lib/error/chat'
 import { NotifyError } from '../../lib/error/event'
 import { RepositoryCallErrorWithServiceCode } from 'base-error'
+import { IRemoteControl } from './remoteControlInterface'
+import { NatureGetAppliancesError } from '../../lib/error/nature'
 
 @autoInjectable()
 export default class DeviceEvent {
@@ -14,23 +16,29 @@ export default class DeviceEvent {
 	readonly deviceId: string
 	private readonly status: string
 	private readonly battery: number
+	private readonly nickname: string
 	private readonly database?: IDeviceDatabase
 	private readonly chat?: IChat
+	private readonly remoteControl?: IRemoteControl
 
 	constructor(
 		messageId: string,
 		deviceId: string,
 		status: string,
 		battery: number,
+		nickname: string,
 		@inject('IDeviceDatabase') database?: IDeviceDatabase,
-		@inject('IChat') chat?: IChat
+		@inject('IChat') chat?: IChat,
+		@inject('IRemoteControl') remoteControl?: IRemoteControl
 	) {
 		this.id = messageId
 		this.deviceId = deviceId
 		this.status = status
 		this.battery = battery
+		this.nickname = nickname
 		this.database = database
 		this.chat = chat
+		this.remoteControl = remoteControl
 	}
 
 	/**
@@ -50,6 +58,15 @@ export default class DeviceEvent {
 
 		let latestDeviceItem: DeviceItem
 		let notifyStatus: NotifyStatus = NotifyStatusMap.NotNeed
+
+		try {
+			const isAirConditioningWork = await this.remoteControl?.isWorking(this.nickname)
+			if (!isAirConditioningWork) return NotifyStatusMap.NotNeedWithTurningOn
+		} catch (e) {
+			if (e instanceof NatureGetAppliancesError) {
+				console.log(`Continue process, but error happens: ${e.name}`)
+			}
+		}
 
 		try {
 			latestDeviceItem = await this.database.getItem(this.deviceId)
