@@ -27,7 +27,11 @@ export default class NatureRemoteControl implements IRemoteControl {
 		}
 
 		appliances.forEach((appliance) => {
-			if (appliance.nickname === nickname && appliance.settings.button === 'power-off') return false
+			console.log(`before calling, nickname: ${appliance.nickname}, button: ${appliance.settings.button}`)
+			if (appliance.nickname === nickname && appliance.settings.button === 'power-off') {
+				console.log(`called, nickname: ${appliance.nickname}, button: ${appliance.settings.button}`) // TODO: will delete after it's work
+				return false
+			}
 		})
 
 		return true
