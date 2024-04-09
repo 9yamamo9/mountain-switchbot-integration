@@ -66,12 +66,15 @@ export default class DeviceEvent {
 
 		try {
 			const isAirConditioningWork = await this.remoteControl.isWorking(this.nickname)
+			console.log(`isAirConditioningWork: ${isAirConditioningWork}`) // TODO: will delete
 			if (!isAirConditioningWork) return NotifyStatusMap.NotNeedWithTurningOn
 		} catch (e) {
 			if (e instanceof NatureGetAppliancesError) {
 				console.log(`Continue process, but error happens: ${e.name}`)
 			}
 		}
+
+		console.log(`Oops...`) // TODO: will delete
 
 		try {
 			latestDeviceItem = await this.database.getItem(this.deviceId)
