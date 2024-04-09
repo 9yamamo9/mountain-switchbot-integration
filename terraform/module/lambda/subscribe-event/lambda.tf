@@ -12,6 +12,8 @@ resource "aws_lambda_function" "this" {
       SWITCHBOT_DEVICE_QUEUE_URL  = var.switchbot_device_queue_url
       SLACK_WEBHOOK_BASE_URL      = var.slack_webhook_base_url
       SLACK_CHANNEL_RESOURCE      = var.slack_channel_resource
+      NATURE_REMO_API_TOKEN       = var.nature_remo_api_token
+      NATURE_APPLIANCE_NICKNAME   = var.nature_appliance_nickname
     }
   }
 }
