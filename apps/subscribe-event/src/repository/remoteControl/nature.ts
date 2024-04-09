@@ -13,6 +13,7 @@ export default class NatureRemoteControl implements IRemoteControl {
 
 	public isWorking = async (nickname: string): Promise<boolean> => {
 		let appliances: NatureAppliance[]
+		let isWorked: boolean = true
 
 		try {
 			const response = await this.client.get<NatureAppliance[]>(
@@ -26,14 +27,13 @@ export default class NatureRemoteControl implements IRemoteControl {
 			throw new NatureGetAppliancesError(500, `Failed to get appliances from Nature Remo`)
 		}
 
-		appliances.forEach((appliance) => {
-			console.log(`before calling, nickname: ${appliance.nickname}, button: ${appliance.settings.button}`)
+		for (const appliance of appliances) {
 			if (appliance.nickname === nickname && appliance.settings.button === 'power-off') {
-				console.log(`called, nickname: ${appliance.nickname}, button: ${appliance.settings.button}`) // TODO: will delete after it's work
-				return false
+				isWorked = false
+				break
 			}
-		})
+		}
 
-		return true
+		return isWorked
 	}
 }
