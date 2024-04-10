@@ -19,7 +19,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
 		return messageResponse(500, 'Request payload is unexpected')
 	}
 
-	const decodedBody = decodeURI(body)
+	const decodedBody = decodeURIComponent(decodeURI(body).replace('payload=', ''))
 	console.log('decodedBody: ', decodedBody)
 
 	const nature = new Nature(NATURE_APPLIANCE_NICKNAME)
