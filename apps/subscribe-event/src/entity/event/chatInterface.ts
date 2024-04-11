@@ -1,3 +1,3 @@
 export interface IChat {
-	send: (message: string) => Promise<void>
+	send: (message: string, applianceNickname: string) => Promise<void>
 }

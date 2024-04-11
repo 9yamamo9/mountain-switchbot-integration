@@ -10,7 +10,7 @@ export default class Slack implements IChat {
 		this.client = new IncomingWebhook(`${SLACK_WEBHOOK_BASE_URL}${SLACK_CHANNEL_RESOURCE}`)
 	}
 
-	public send = async (message: string): Promise<void> => {
+	public send = async (message: string, applianceNickname: string): Promise<void> => {
 		try {
 			await this.client.send({
 				text: message,
@@ -28,7 +28,7 @@ export default class Slack implements IChat {
 								text: 'Turn Off'
 							},
 							style: 'primary',
-							value: 'turn_off'
+							value: `turn_off_${applianceNickname}`
 						}
 					}
 				]

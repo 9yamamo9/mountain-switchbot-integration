@@ -9,6 +9,7 @@ import { NotifyError } from '../../lib/error/event'
 import { RepositoryCallErrorWithServiceCode } from 'base-error'
 import { IRemoteControl } from './remoteControlInterface'
 import { NatureGetAppliancesError } from '../../lib/error/nature'
+import { NATURE_APPLIANCE_NICKNAME } from '../../constant/nature/nature'
 
 @autoInjectable()
 export default class DeviceEvent {
@@ -100,7 +101,7 @@ export default class DeviceEvent {
 		notifyStatus = NotifyStatusMap.Need
 
 		try {
-			await this.chat.send(`Haven't you forgot to turn off the air conditioning?`)
+			await this.chat.send(`Haven't you forgot to turn off the air conditioning?`, NATURE_APPLIANCE_NICKNAME)
 		} catch (e) {
 			if (e instanceof SendMessageError) {
 				console.error(`Failed to notify a message by ${e.name}`)
