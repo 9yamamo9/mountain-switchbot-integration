@@ -28,12 +28,8 @@ export default class NatureRemoteControl implements IRemoteControl {
 		}
 
 		appliances.forEach((appliance) => {
-			console.log(`button: ${appliance.settings.button}`)
-			console.log(`nickname: ${appliance.nickname}`)
-			if (appliance.settings.button === 'power-off') workingApplianceNicknames.push(appliance.nickname)
+			if (appliance.settings.button !== 'power-off') workingApplianceNicknames.push(appliance.nickname)
 		})
-
-		console.log(`workingApplianceNicknames: ${workingApplianceNicknames}`)
 
 		return workingApplianceNicknames
 	}
