@@ -54,8 +54,16 @@ class FakeSlack implements IChat {
 }
 
 class FakeRemoteControl implements IRemoteControl {
-	public isWorking = async (nickname: string): Promise<boolean> => {
-		return nickname !== 'turnOffAppliance';
+	public getWorkingApplianceNicknames = async (): Promise<string[]> => {
+		return [
+			'turnOnAppliance'
+		]
+	}
+}
+
+class FakeTurnOffRemoteControl implements IRemoteControl {
+	public getWorkingApplianceNicknames = async (): Promise<string[]> => {
+		return []
 	}
 }
 
@@ -67,27 +75,35 @@ container.register('IChat', {
 	useClass: FakeSlack
 })
 
-container.register('IRemoteControl', {
-	useClass: FakeRemoteControl
-})
-
 describe('notify', () => {
 	test('do not need to notify because a latest device message id is not match', async () => {
-		const event = new DeviceEvent('dummyMessageId', 'dummyDeviceId', DeviceStatusMap.NotDetect, 100, 'turnOnAppliance')
+		container.register('IRemoteControl', {
+			useClass: FakeRemoteControl
+		})
+
+		const event = new DeviceEvent('dummyMessageId', 'dummyDeviceId', DeviceStatusMap.NotDetect, 100)
 		const actual = await event.notify()
 
 		expect(actual).toEqual(NotifyStatusMap.NotNeed)
 	})
 
 	test('need to notify because a latest device message id is match', async () => {
-		const event = new DeviceEvent('dummyMessageId', 'dummyNeedDeviceId', DeviceStatusMap.NotDetect, 100, 'turnOnAppliance')
+		container.register('IRemoteControl', {
+			useClass: FakeRemoteControl
+		})
+
+		const event = new DeviceEvent('dummyMessageId', 'dummyNeedDeviceId', DeviceStatusMap.NotDetect, 100)
 		const actual = await event.notify()
 
 		expect(actual).toEqual(NotifyStatusMap.Need)
 	})
 
 	test('do not need to notify because air conditioning does not turn on', async () => {
-		const event = new DeviceEvent('dummyMessageId', 'dummyTurnOffDeviceId', DeviceStatusMap.NotDetect, 100, 'turnOffAppliance')
+		container.register('IRemoteControl', {
+			useClass: FakeTurnOffRemoteControl
+		})
+
+		const event = new DeviceEvent('dummyMessageId', 'dummyTurnOffDeviceId', DeviceStatusMap.NotDetect, 100)
 		const actual = await event.notify()
 
 		expect(actual).toEqual(NotifyStatusMap.NotNeedWithTurningOn)
