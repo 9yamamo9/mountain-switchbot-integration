@@ -11,9 +11,9 @@ export default class NatureRemoteControl implements IRemoteControl {
 		this.client = new RestClient('home-controller', NATURE_REMO_API_BASE_URL)
 	}
 
-	public isWorking = async (nickname: string): Promise<boolean> => {
+	public getWorkingApplianceNicknames = async (): Promise<string[]> => {
 		let appliances: NatureAppliance[]
-		let isWorked: boolean = true
+		let workingApplianceNicknames: string[] = []
 
 		try {
 			const response = await this.client.get<NatureAppliance[]>(
@@ -27,13 +27,10 @@ export default class NatureRemoteControl implements IRemoteControl {
 			throw new NatureGetAppliancesError(500, `Failed to get appliances from Nature Remo`)
 		}
 
-		for (const appliance of appliances) {
-			if (appliance.nickname === nickname && appliance.settings.button === 'power-off') {
-				isWorked = false
-				break
-			}
-		}
+		appliances.forEach((appliance) => {
+			if (appliance.settings.button === 'power-off') workingApplianceNicknames.push(appliance.nickname)
+		})
 
-		return isWorked
+		return workingApplianceNicknames
 	}
 }

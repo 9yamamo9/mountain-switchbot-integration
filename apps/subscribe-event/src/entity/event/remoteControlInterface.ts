@@ -1,3 +1,3 @@
 export interface IRemoteControl {
-	isWorking: (nickname: string) => Promise<boolean>
+	getWorkingApplianceNicknames: () => Promise<string[]>
 }

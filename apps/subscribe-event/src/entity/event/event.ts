@@ -9,7 +9,6 @@ import { NotifyError } from '../../lib/error/event'
 import { RepositoryCallErrorWithServiceCode } from 'base-error'
 import { IRemoteControl } from './remoteControlInterface'
 import { NatureGetAppliancesError } from '../../lib/error/nature'
-import { NATURE_APPLIANCE_NICKNAME } from '../../constant/nature/nature'
 
 @autoInjectable()
 export default class DeviceEvent {
@@ -17,7 +16,6 @@ export default class DeviceEvent {
 	readonly deviceId: string
 	private readonly status: string
 	private readonly battery: number
-	private readonly nickname: string
 	private readonly database?: IDeviceDatabase
 	private readonly chat?: IChat
 	private readonly remoteControl?: IRemoteControl
@@ -27,7 +25,6 @@ export default class DeviceEvent {
 		deviceId: string,
 		status: string,
 		battery: number,
-		nickname: string,
 		@inject('IDeviceDatabase') database?: IDeviceDatabase,
 		@inject('IChat') chat?: IChat,
 		@inject('IRemoteControl') remoteControl?: IRemoteControl
@@ -36,7 +33,6 @@ export default class DeviceEvent {
 		this.deviceId = deviceId
 		this.status = status
 		this.battery = battery
-		this.nickname = nickname
 		this.database = database
 		this.chat = chat
 		this.remoteControl = remoteControl
@@ -62,12 +58,13 @@ export default class DeviceEvent {
 			throw new RepositoryCallErrorWithServiceCode(500, 100002, 'Can NOT call remote control repository')
 		}
 
+		let workingApplianceNicknames: string[] = []
 		let latestDeviceItem: DeviceItem
 		let notifyStatus: NotifyStatus = NotifyStatusMap.NotNeed
 
 		try {
-			const isAirConditioningWork = await this.remoteControl.isWorking(this.nickname)
-			if (!isAirConditioningWork) return NotifyStatusMap.NotNeedWithTurningOn
+			workingApplianceNicknames = await this.remoteControl.getWorkingApplianceNicknames()
+			if (workingApplianceNicknames.length === 0) return NotifyStatusMap.NotNeedWithTurningOn
 		} catch (e) {
 			if (e instanceof NatureGetAppliancesError) {
 				console.log(`Continue process, but error happens: ${e.name}`)
@@ -100,17 +97,19 @@ export default class DeviceEvent {
 
 		notifyStatus = NotifyStatusMap.Need
 
-		try {
-			await this.chat.send(`Haven't you forgot to turn off the air conditioning?`, NATURE_APPLIANCE_NICKNAME)
-		} catch (e) {
-			if (e instanceof SendMessageError) {
-				console.error(`Failed to notify a message by ${e.name}`)
+		for (const nickname of workingApplianceNicknames) {
+			try {
+				await this.chat.send(`Haven't you forgot to turn off ${nickname}?`, nickname)
+			} catch (e) {
+				if (e instanceof SendMessageError) {
+					console.error(`Failed to notify a message by ${e.name}`)
 
-				throw new NotifyError(
-					e.statusCode,
-					100001,
-					`Failed to notify a message by ${e.name}`
-				)
+					throw new NotifyError(
+						e.statusCode,
+						100001,
+						`Failed to notify a message by ${e.name}`
+					)
+				}
 			}
 		}
 

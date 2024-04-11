@@ -38,11 +38,6 @@ variable "nature_remo_api_token" {
   type        = string
 }
 
-variable "nature_appliance_nickname" {
-  description = "Nature Appliance Nickname"
-  type        = string
-}
-
 variable "enabled" {
   description = "Event Source Mapping is Enable"
   type        = bool
