@@ -6,6 +6,7 @@ import { container } from 'tsyringe'
 import NatureRemoteControl from './repository/control/nature'
 import { BaseErrorWithServiceCode, RepositoryCallErrorWithServiceCode } from 'base-error'
 import { messageResponse, messageResponseWithServiceCode } from 'base-response'
+import { SlackWebhookRequest } from './type/slack/webhook'
 
 container.register('IRemoteControl', {
 	useClass: NatureRemoteControl
@@ -19,8 +20,8 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
 		return messageResponse(500, 'Request payload is unexpected')
 	}
 
-	const decodedBody = decodeURIComponent(decodeURI(body).replace('payload=', ''))
-	console.log('decodedBody: ', decodedBody)
+	const decodedBody = JSON.parse(decodeURIComponent(decodeURI(body).replace('payload=', ''))) as SlackWebhookRequest
+	console.log('decodedBody: ', JSON.stringify(decodedBody))
 
 	const nature = new Nature(NATURE_APPLIANCE_NICKNAME)
 
