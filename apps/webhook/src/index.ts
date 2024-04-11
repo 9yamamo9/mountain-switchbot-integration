@@ -8,6 +8,7 @@ import DeviceQueue from './repogitory/sqs/device'
 import { NotifyError } from './lib/error/device'
 import { messageResponse, messageResponseWithServiceCode } from 'base-response'
 import { RepositoryCallErrorWithServiceCode } from 'base-error'
+import { validate } from './lib/validation'
 
 container.register('IDeviceDatabase', {
 	useClass: DeviceDynamoDB
@@ -21,11 +22,25 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
 	if (!event.body) {
 		console.error(`event.body is null`)
 
-		return messageResponse(500, 'Request payload is unexpected')
+		return messageResponse(400, 'Request payload is unexpected')
 	}
 
-
 	const deviceEvent = JSON.parse(event.body) as Event
+
+	try {
+		validate(deviceEvent)
+	} catch (e) {
+		if (e instanceof SyntaxError) {
+			console.error(
+				`Device Event is invalid arguments,
+				 device mac: ${deviceEvent.context.deviceMac},
+				 device status: ${deviceEvent.context.detectionState},
+				 device battery: ${deviceEvent.context.battery}`
+			)
+
+			return messageResponse(400, 'Request payload is unexpected')
+		}
+	}
 
 	const device = new Device(deviceEvent.context.deviceMac, deviceEvent.context.detectionState, deviceEvent.context.battery)
 
