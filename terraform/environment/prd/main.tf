@@ -31,11 +31,10 @@ module "lambda_subscribe_event" {
 }
 
 module "lambda_nature_remo" {
-  source                    = "../../module/lambda/nature-remo"
-  service                   = local.service
-  execution_arn             = module.api_gateway.execution_arn
-  nature_remo_api_token     = var.nature_remo_api_token
-  nature_appliance_nickname = var.nature_appliance_nickname
+  source                = "../../module/lambda/nature-remo"
+  service               = local.service
+  execution_arn         = module.api_gateway.execution_arn
+  nature_remo_api_token = var.nature_remo_api_token
 }
 
 module "dynamodb" {

@@ -1,7 +1,6 @@
 import 'reflect-metadata'
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import Nature from './entity/nature'
-import { NATURE_APPLIANCE_NICKNAME } from './constant/nature/nature'
 import { container } from 'tsyringe'
 import NatureRemoteControl from './repository/control/nature'
 import { BaseErrorWithServiceCode, RepositoryCallErrorWithServiceCode } from 'base-error'
@@ -23,29 +22,42 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
 	const decodedBody = JSON.parse(decodeURIComponent(decodeURI(body).replace('payload=', ''))) as SlackWebhookRequest
 	console.log('decodedBody: ', JSON.stringify(decodedBody))
 
-	const nature = new Nature(NATURE_APPLIANCE_NICKNAME)
+	const targetApplianceNicknames = decodedBody.actions
+		.map((action) => {
+			if (action.value.includes('turn_off')) {
+				return action.value.replace('turn_off_', '')
+			}
+		})
+		.filter((nickname) => nickname !== undefined)
 
-	try {
-		await nature.turnOff()
-	} catch (e) {
-		if (e instanceof BaseErrorWithServiceCode) {
-			return messageResponseWithServiceCode(
-				e.statusCode,
-				e.serviceCode,
-				'Failed to turn off an air conditioning'
-			)
+	for (const nickname of targetApplianceNicknames) {
+		if (!nickname) continue
+		const nature = new Nature(nickname)
 
-		} else if (e instanceof RepositoryCallErrorWithServiceCode) {
-			return messageResponseWithServiceCode(
-				e.statusCode,
-				e.serviceCode,
-				`Failed to call repository resource: ${e.message}`
-			)
+		try {
+			await nature.turnOff()
+		} catch (e) {
+			if (e instanceof BaseErrorWithServiceCode) {
+				return messageResponseWithServiceCode(
+					e.statusCode,
+					e.serviceCode,
+					'Failed to turn off an air conditioning'
+				)
 
-		} else {
-			return messageResponse(500, 'Unknown Error')
+			} else if (e instanceof RepositoryCallErrorWithServiceCode) {
+				return messageResponseWithServiceCode(
+					e.statusCode,
+					e.serviceCode,
+					`Failed to call repository resource: ${e.message}`
+				)
+
+			} else {
+				return messageResponse(500, 'Unknown Error')
+			}
 		}
 	}
+
+
 
 	return messageResponse(201, 'Turn off an air conditioning')
 }
