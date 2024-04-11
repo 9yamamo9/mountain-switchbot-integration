@@ -31,6 +31,8 @@ export default class NatureRemoteControl implements IRemoteControl {
 			if (appliance.settings.button === 'power-off') workingApplianceNicknames.push(appliance.nickname)
 		})
 
+		console.log(`workingApplianceNicknames: ${workingApplianceNicknames}`)
+
 		return workingApplianceNicknames
 	}
 }
