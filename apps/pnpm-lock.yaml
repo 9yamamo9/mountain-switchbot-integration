@@ -14,6 +14,9 @@ importers:
 
   nature-remo/src:
     dependencies:
+      '@slack/webhook':
+        specifier: ^7.0.2
+        version: 7.0.2
       base-error:
         specifier: workspace:*
         version: link:../../packages/base-error
