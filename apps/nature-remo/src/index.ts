@@ -6,6 +6,7 @@ import NatureRemoteControl from './repository/control/nature'
 import { BaseErrorWithServiceCode, RepositoryCallErrorWithServiceCode } from 'base-error'
 import { messageResponse, messageResponseWithServiceCode } from 'base-response'
 import { SlackWebhookRequest } from './type/slack/webhook'
+import Slack from './repository/chat/slack'
 
 container.register('IRemoteControl', {
 	useClass: NatureRemoteControl
@@ -22,6 +23,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
 	const decodedBody = JSON.parse(decodeURIComponent(decodeURI(body).replace('payload=', ''))) as SlackWebhookRequest
 	console.log('decodedBody: ', JSON.stringify(decodedBody))
 
+	const responseUrl = decodedBody.response_url
 	const targetApplianceNicknames = decodedBody.actions
 		.map((action) => {
 			if (action.value.includes('turn_off')) {
@@ -29,6 +31,10 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
 			}
 		})
 		.filter((nickname) => nickname !== undefined)
+
+	container.register('IChat', {
+		useValue: new Slack(responseUrl)
+	})
 
 	for (const nickname of targetApplianceNicknames) {
 		if (!nickname) continue
@@ -56,7 +62,6 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
 			}
 		}
 	}
-
 
 
 	return messageResponse(201, 'Turn off an air conditioning')
