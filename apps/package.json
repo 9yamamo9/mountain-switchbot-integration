@@ -10,7 +10,7 @@
     "error": "pnpm -F \"base-error\"",
     "response": "pnpm -F \"base-response\"",
     "test": "turbo run test",
-    "build": "turbo run build"
+    "build": "turbo run build --cache-dir=.turbo"
   },
   "keywords": [],
   "author": "",
