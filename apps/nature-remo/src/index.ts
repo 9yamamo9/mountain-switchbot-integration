@@ -63,6 +63,6 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
 		}
 	}
 
-
+	console.log('debug log.')
 	return messageResponse(201, 'Turn off an air conditioning')
 }
