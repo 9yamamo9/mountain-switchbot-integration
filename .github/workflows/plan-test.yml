@@ -17,12 +17,23 @@ jobs:
       run:
         shell: bash
         working-directory: apps
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Cache turbo build setup
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: "${{ runner.os }}-turbo-${{ github.sha }}"
+          restore-keys: |
+            ${{ runner.os }}-turbo-
 
       - name: 'Set Up pnpm'
         uses: pnpm/action-setup@v3
