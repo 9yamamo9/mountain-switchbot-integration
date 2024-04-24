@@ -1,5 +1,5 @@
 data "archive_file" "this" {
   type        = "zip"
-  source_dir  = "${path.cwd}/apps/webhook/src/.build"
+  source_dir  = "${path.cwd}/artifacts/webhook/src/.build"
   output_path = "${path.module}/out/function.zip"
 }
