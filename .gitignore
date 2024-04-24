@@ -146,3 +146,5 @@ build
 
 # Others
 sample
+.build
+**/.DS_Store
