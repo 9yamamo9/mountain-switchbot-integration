@@ -28,6 +28,15 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Cache turbo build setup
+        uses: actions/cache@v4
+        with:
+          path: |
+            apps/nature-remo/src/.build
+          key: "${{ runner.os }}-turbo-${{ github.sha }}"
+          restore-keys: |
+            ${{ runner.os }}-turbo-
+
       - name: 'Set Up pnpm'
         uses: pnpm/action-setup@v3
         with:
