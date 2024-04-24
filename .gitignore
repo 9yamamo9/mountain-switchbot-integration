@@ -137,6 +137,7 @@ dist
 
 # TypeScript
 build
+.build
 
 # Turbo
 .turbo
@@ -146,3 +147,4 @@ build
 
 # Others
 sample
+**/.DS_Store
