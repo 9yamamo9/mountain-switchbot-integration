@@ -7,7 +7,7 @@
     "type-check": "tsc -noEmit",
     "test": "vitest run",
     "test-watch": "vitest",
-    "build": "esbuild index.ts --bundle --minify --sourcemap --platform=node --outfile=.build/index.js & ls -al .turbo"
+    "build": "esbuild index.ts --bundle --minify --sourcemap --platform=node --outfile=.build/index.js & ls -al .turbo & ls -al .build"
   },
   "keywords": [],
   "author": "",
